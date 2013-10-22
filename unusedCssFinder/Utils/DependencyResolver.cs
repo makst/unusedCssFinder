@@ -8,7 +8,7 @@ namespace UnusedCssFinder.Utils
     {
         Dictionary<Type, object> registeredTypes = new Dictionary<Type, object>
         {
-            {typeof(IHtmlManager), new HtmlManager()},
+            {typeof(IHtmlManager), new HtmlManager(new StyleManager())},
             {typeof(IStyleManager), new StyleManager()}
         };
 

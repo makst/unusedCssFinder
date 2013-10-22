@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ExCSS;
 using HtmlAgilityPack;
 
 namespace UnusedCssFinder.Managers
@@ -7,6 +8,6 @@ namespace UnusedCssFinder.Managers
     public interface IHtmlManager
     {
         HtmlDocument GetHtmlDocument(Uri uri);
-        IEnumerable<string> GetDocumentStyleUris(Uri baseUri, HtmlDocument htmlDocument);
+        Dictionary<string, Stylesheet> GetDocumentStylesheets(Uri baseUri, HtmlDocument htmlDocument);
     }
 }

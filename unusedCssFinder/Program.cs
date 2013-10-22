@@ -7,7 +7,6 @@ using UnusedCssFinder.Managers;
 using UnusedCssFinder.Utils;
 using UnusedCssFinder;
 using UnusedCssFinder.CssData;
-using SimpleSelector = ExCSS.Model.SimpleSelector;
 
 namespace UnusedCssFinder
 {
@@ -26,12 +25,13 @@ namespace UnusedCssFinder
 
         static void Main(string[] args)
         {
-            var baseUri = new Uri("http://habrahabr.ru");
+            var baseUri = new Uri("http://trinixy.ru");
             var htmlDocument = _htmlManager.GetHtmlDocument(baseUri);
-            var styleUris = _htmlManager.GetDocumentStyleUris(baseUri, htmlDocument);
+            var styleIdStylesheets = _htmlManager.GetDocumentStylesheets(baseUri, htmlDocument);
 
-            var styleIdStylesheets = styleUris.ToDictionary(styleUri => styleUri, styleUri => _cssManager.GetStylesheetFromAddress(styleUri));
-            var styleIDExtendedStylesheets = styleIdStylesheets.ToDictionary(s => s.Key, s => Mapper.Map<Stylesheet>(s.Value));
+           
+            var styleIDExtendedStylesheets = styleIdStylesheets
+                    .ToDictionary(s => s.Key, s => Mapper.Map<Stylesheet>(s.Value));
 
             //List<string> selectors = new List<string>();
 
@@ -57,18 +57,18 @@ namespace UnusedCssFinder
             //}
         }
 
-        private static void AdjustPseudoIfNeeded(SimpleSelector simpleSelector)
-        {
-            List<string> notDependentOnBrowserPseudoClasses = new List<string> { ":first-child", ":last-child", ":first-of-type", ":last-of-type", ":only-child", ":only-of-type", ":nth-child(N)", ":nth-of-type(N)", ":nth-last-child(N)", ":nth-last-of-type(N)", ":enabled", ":disabled", ":empty", ":checked", ":root", ":not(S)" };
+        //private static void AdjustPseudoIfNeeded(SimpleSelector simpleSelector)
+        //{
+        //    List<string> notDependentOnBrowserPseudoClasses = new List<string> { ":first-child", ":last-child", ":first-of-type", ":last-of-type", ":only-child", ":only-of-type", ":nth-child(N)", ":nth-of-type(N)", ":nth-last-child(N)", ":nth-last-of-type(N)", ":enabled", ":disabled", ":empty", ":checked", ":root", ":not(S)" };
 
-            if (simpleSelector.Pseudo != null && !notDependentOnBrowserPseudoClasses.Contains(simpleSelector.Pseudo))
-            {
-                simpleSelector.Pseudo = null;
-            }
-            if (simpleSelector.Child != null)
-            {
-                AdjustPseudoIfNeeded(simpleSelector.Child);
-            }
-        }
+        //    if (simpleSelector.Pseudo != null && !notDependentOnBrowserPseudoClasses.Contains(simpleSelector.Pseudo))
+        //    {
+        //        simpleSelector.Pseudo = null;
+        //    }
+        //    if (simpleSelector.Child != null)
+        //    {
+        //        AdjustPseudoIfNeeded(simpleSelector.Child);
+        //    }
+        //}
     }
 }
