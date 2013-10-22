@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ExCSS.Model;
+using AutoMapper;
 using UnusedCssFinder.CssData;
 using UnusedCssFinder.Managers;
 using UnusedCssFinder.Utils;
+using UnusedCssFinder;
+using UnusedCssFinder.CssData;
+using SimpleSelector = ExCSS.Model.SimpleSelector;
 
 namespace UnusedCssFinder
 {
@@ -15,6 +18,7 @@ namespace UnusedCssFinder
 
         static Program()
         {
+            AutomapperConfig.Init();
             var dependencyResolver = new DependencyResolver();
             _htmlManager = dependencyResolver.Resolve<IHtmlManager>();
             _cssManager = dependencyResolver.Resolve<IStyleManager>();
@@ -22,12 +26,12 @@ namespace UnusedCssFinder
 
         static void Main(string[] args)
         {
-            var baseUri = new Uri("http://i.materialise.com");
+            var baseUri = new Uri("http://habrahabr.ru");
             var htmlDocument = _htmlManager.GetHtmlDocument(baseUri);
             var styleUris = _htmlManager.GetDocumentStyleUris(baseUri, htmlDocument);
 
-            var stylesheet = _cssManager.GetStylesheetFromAddress(styleUris.First());
-
+            var styleIdStylesheets = styleUris.ToDictionary(styleUri => styleUri, styleUri => _cssManager.GetStylesheetFromAddress(styleUri));
+            var styleIDExtendedStylesheets = styleIdStylesheets.ToDictionary(s => s.Key, s => Mapper.Map<Stylesheet>(s.Value));
 
             //List<string> selectors = new List<string>();
 

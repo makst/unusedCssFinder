@@ -2,7 +2,7 @@
 
 namespace UnusedCssFinder.CssData
 {
-    public class Specificity : IComparable<Specificity>
+    public class Specificity : IComparable<Specificity>, IEquatable<Specificity>
     {
         public int A { get; private set; }
         public int B { get; private set; }
@@ -40,22 +40,26 @@ namespace UnusedCssFinder.CssData
             return 0;
         }
 
-        protected bool Equals(Specificity other)
+        public override bool Equals(object obj)
         {
-            if (other == null)
-                return false;
-
-            return other.A == A && other.B == B && other.C == C && other.D == D;
+            if (obj != null && obj is Specificity)
+            {
+                return Equals((Specificity)obj);
+            }
+            return false;
         }
 
-        public static bool operator ==(Specificity x, Specificity y)
+        public override int GetHashCode()
         {
-            return x.Equals(y);
+            unchecked
+            {
+                return A * 1000 + B * 100 + C * 10 + D;
+            }
         }
 
-        public static bool operator !=(Specificity x, Specificity y)
+        public bool Equals(Specificity other)
         {
-            return !x.Equals(y);
+             return A == other.A && B == other.B && C == other.C && D == other.D;
         }
 
         public static bool operator >(Specificity x, Specificity y)
@@ -66,6 +70,11 @@ namespace UnusedCssFinder.CssData
         public static bool operator <(Specificity x, Specificity y)
         {
             return x.CompareTo(y) < 0;
+        }
+
+        public static Specificity operator +(Specificity x, Specificity y)
+        {
+            return new Specificity(x.A + y.A, x.B + y.B, x.C + y.C, x.D + y.D);
         }
     }
 }

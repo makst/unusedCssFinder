@@ -19,7 +19,7 @@ namespace UnusedCssFinder.Managers
         public IEnumerable<string> GetDocumentStyleUris(Uri baseUri, HtmlDocument htmlDocument)
         {
             var styles = new List<string>();
-            foreach (HtmlNode link in htmlDocument.DocumentNode.SelectNodes("//link[@type=\"text/css\"]"))
+            foreach (HtmlNode link in htmlDocument.DocumentNode.SelectNodes("//link[@type=\"text/css\" or @rel=\"stylesheet\"]"))
             {
                 var styleUri = link.Attributes.First(a => a.Name == "href").Value;
                 styleUri = styleUri.StartsWith("/") 

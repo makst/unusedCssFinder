@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.0.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.0.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="ExCSS">
       <HintPath>..\packages\ExCSS.1.1.0\lib\net40\ExCSS.dll</HintPath>
     </Reference>
@@ -47,9 +53,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutomapperConfig.cs" />
+    <Compile Include="CssData\Declaration.cs" />
+    <Compile Include="CssData\Directive.cs" />
     <Compile Include="CssData\ElementData.cs" />
+    <Compile Include="CssData\ElementDataType.cs" />
+    <Compile Include="CssData\RuleSet.cs" />
+    <Compile Include="CssData\Selector.cs" />
     <Compile Include="CssData\SimpleSelector.cs" />
     <Compile Include="CssData\Specificity.cs" />
+    <Compile Include="CssData\Stylesheet.cs" />
+    <Compile Include="Managers\ElementDataManager.cs" />
     <Compile Include="Managers\HtmlManager.cs" />
     <Compile Include="Managers\IHtmlManager.cs" />
     <Compile Include="Managers\IStyleManager.cs" />
@@ -57,6 +71,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\DependencyResolver.cs" />
+    <Compile Include="Utils\SpecificityCounter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

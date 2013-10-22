@@ -1,6 +1,6 @@
 ﻿using UnusedCssFinder.CssData;
 
-namespace unusedCssFinder.CssData
+namespace UnusedCssFinder.CssData
 {
     public class ElementData
     {
