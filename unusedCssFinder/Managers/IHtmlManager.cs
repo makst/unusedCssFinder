@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ExCSS;
 using HtmlAgilityPack;
 
-namespace UnusedCssFinder.Managers
+namespace unusedCssFinder.Managers
 {
     public interface IHtmlManager
     {

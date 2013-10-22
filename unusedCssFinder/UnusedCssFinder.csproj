@@ -54,15 +54,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutomapperConfig.cs" />
-    <Compile Include="CssData\Declaration.cs" />
-    <Compile Include="CssData\Directive.cs" />
+    <Compile Include="CssData\ExCssModelsWrappers\Directive.cs" />
     <Compile Include="CssData\ElementData.cs" />
     <Compile Include="CssData\ElementDataType.cs" />
-    <Compile Include="CssData\RuleSet.cs" />
-    <Compile Include="CssData\Selector.cs" />
-    <Compile Include="CssData\SimpleSelector.cs" />
+    <Compile Include="CssData\ExCssModelsWrappers\RuleSet.cs" />
+    <Compile Include="CssData\ExCssModelsWrappers\Selector.cs" />
+    <Compile Include="CssData\ExCssModelsWrappers\SimpleSelector.cs" />
     <Compile Include="CssData\Specificity.cs" />
-    <Compile Include="CssData\Stylesheet.cs" />
+    <Compile Include="CssData\ExCssModelsWrappers\Stylesheet.cs" />
     <Compile Include="Managers\ElementDataManager.cs" />
     <Compile Include="Managers\HtmlManager.cs" />
     <Compile Include="Managers\IHtmlManager.cs" />

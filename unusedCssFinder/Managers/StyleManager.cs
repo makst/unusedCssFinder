@@ -2,7 +2,7 @@
 using System.Net;
 using ExCSS;
 
-namespace UnusedCssFinder.Managers
+namespace unusedCssFinder.Managers
 {
     public class StyleManager : IStyleManager
     {

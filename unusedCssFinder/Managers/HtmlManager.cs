@@ -6,7 +6,7 @@ using ExCSS;
 using ExCSS.Model;
 using HtmlAgilityPack;
 
-namespace UnusedCssFinder.Managers
+namespace unusedCssFinder.Managers
 {
     public class HtmlManager : IHtmlManager
     {

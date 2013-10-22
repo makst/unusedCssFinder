@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnusedCssFinder.CssData;
+using unusedCssFinder.CssData;
+using unusedCssFinder.CssData.ExCssModelsWrappers;
 
-namespace UnusedCssFinder.Utils
+namespace unusedCssFinder.Utils
 {
     public class SpecificityCounter
     {
@@ -31,7 +32,7 @@ namespace UnusedCssFinder.Utils
                 "disabled",
                 "checked Pseudo-class",
                 "not"
-            }; 
+            };
 
         public Specificity GetSpecificityBy(string value, ElementDataType elementDataType, bool isInlineStyle = false)
         {
@@ -50,6 +51,10 @@ namespace UnusedCssFinder.Utils
         public Specificity GetSpecificityOfSelector(SimpleSelector simpleSelector)
         {
             var result = new Specificity(0, 0, 0, 0);
+            if (simpleSelector.Attribute != null)
+            {
+                result += new Specificity(0, 0, 1, 0);
+            }
             if (simpleSelector.ID != null)
             {
                 result += simpleSelector.ID.Specificity;
@@ -70,7 +75,7 @@ namespace UnusedCssFinder.Utils
                 result += simpleSelector.Pseudo.Specificity;
                 return GetResultingSpecificity(result, simpleSelector.Child);
             }
-            return result;
+            return GetResultingSpecificity(result, simpleSelector.Child);
         }
 
         private Specificity GetResultingSpecificity(Specificity currentSelectorSpecificity, SimpleSelector childSelector)
@@ -88,7 +93,7 @@ namespace UnusedCssFinder.Utils
             {
                 return true;
             }
-            if (elementDataType == ElementDataType.Pseudo && !pseudoClasses.Any(value.Contains))
+            if (elementDataType == ElementDataType.Pseudo && !pseudoClasses.Any(value.StartsWith))
             {
                 return true;
             }
@@ -101,7 +106,7 @@ namespace UnusedCssFinder.Utils
             {
                 return true;
             }
-            if (elementDataType == ElementDataType.Pseudo && pseudoClasses.Any(value.Contains))
+            if (elementDataType == ElementDataType.Pseudo && pseudoClasses.Any(value.StartsWith))
             {
                 return true;
             }

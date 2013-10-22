@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnusedCssFinder.Managers;
+using unusedCssFinder.Managers;
 
-namespace UnusedCssFinder.Utils
+namespace unusedCssFinder.Utils
 {
     public class DependencyResolver
     {

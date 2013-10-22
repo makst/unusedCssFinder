@@ -1,4 +1,4 @@
-﻿namespace UnusedCssFinder.CssData
+﻿namespace unusedCssFinder.CssData
 {
     public enum ElementDataType
     {

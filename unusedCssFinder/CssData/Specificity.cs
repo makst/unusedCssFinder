@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnusedCssFinder.CssData
+namespace unusedCssFinder.CssData
 {
     public class Specificity : IComparable<Specificity>, IEquatable<Specificity>
     {

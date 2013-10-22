@@ -1,7 +1,7 @@
-﻿using UnusedCssFinder.CssData;
-using UnusedCssFinder.Utils;
+﻿using unusedCssFinder.CssData;
+using unusedCssFinder.Utils;
 
-namespace UnusedCssFinder.Managers
+namespace unusedCssFinder.Managers
 {
     public class ElementDataManager
     {

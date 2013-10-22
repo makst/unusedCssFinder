@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using UnusedCssFinder.CssData;
-using UnusedCssFinder.Managers;
-using UnusedCssFinder.Utils;
-using UnusedCssFinder;
-using UnusedCssFinder.CssData;
+using unusedCssFinder.CssData;
+using unusedCssFinder.CssData.ExCssModelsWrappers;
+using unusedCssFinder.Managers;
+using unusedCssFinder.Utils;
+using unusedCssFinder;
+using unusedCssFinder.CssData;
 
-namespace UnusedCssFinder
+namespace unusedCssFinder
 {
     class Program
     {
@@ -33,42 +34,6 @@ namespace UnusedCssFinder
             var styleIDExtendedStylesheets = styleIdStylesheets
                     .ToDictionary(s => s.Key, s => Mapper.Map<Stylesheet>(s.Value));
 
-            //List<string> selectors = new List<string>();
-
-            //foreach (var ruleSet in styleSheet.RuleSets)
-            //{
-            //    foreach (var selector in ruleSet.Selectors)
-            //    {
-            //        foreach (var simpleSelector in selector.SimpleSelectors)
-            //        {
-            //            AdjustPseudoIfNeeded(simpleSelector);
-            //        }
-            //        selectors.Add(string.Join(" ", selector));
-            //    }
-            //}
-
-            //List<string> unusedSelectors = new List<string>();
-            //foreach (var selector in selectors)
-            //{
-            //    if (!dom.Select(selector).Any())
-            //    {
-            //        unusedSelectors.Add(selector);
-            //    }
-            //}
         }
-
-        //private static void AdjustPseudoIfNeeded(SimpleSelector simpleSelector)
-        //{
-        //    List<string> notDependentOnBrowserPseudoClasses = new List<string> { ":first-child", ":last-child", ":first-of-type", ":last-of-type", ":only-child", ":only-of-type", ":nth-child(N)", ":nth-of-type(N)", ":nth-last-child(N)", ":nth-last-of-type(N)", ":enabled", ":disabled", ":empty", ":checked", ":root", ":not(S)" };
-
-        //    if (simpleSelector.Pseudo != null && !notDependentOnBrowserPseudoClasses.Contains(simpleSelector.Pseudo))
-        //    {
-        //        simpleSelector.Pseudo = null;
-        //    }
-        //    if (simpleSelector.Child != null)
-        //    {
-        //        AdjustPseudoIfNeeded(simpleSelector.Child);
-        //    }
-        //}
     }
 }

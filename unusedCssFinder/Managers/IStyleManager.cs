@@ -1,7 +1,7 @@
 ﻿using System;
 using ExCSS;
 
-namespace UnusedCssFinder.Managers
+namespace unusedCssFinder.Managers
 {
     public interface IStyleManager
     {

@@ -1,6 +1,7 @@
-﻿using UnusedCssFinder.CssData;
+﻿using unusedCssFinder.CssData;
+using unusedCssFinder.CssData.ExCssModelsWrappers;
 
-namespace UnusedCssFinder.CssData
+namespace unusedCssFinder.CssData
 {
     public class ElementData
     {

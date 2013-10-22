@@ -1,34 +1,36 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
-using UnusedCssFinder.CssData;
-using UnusedCssFinder.CssData;
-using UnusedCssFinder.Managers;
-using UnusedCssFinder.Utils;
+using unusedCssFinder.CssData.ExCssModelsWrappers;
 
-namespace UnusedCssFinder
+namespace unusedCssFinder
 {
     public static class AutomapperConfig
     {
         public static void Init()
         {
-            Mapper.CreateMap<ExCSS.Model.Directive, Directive>();
-            Mapper.CreateMap<ExCSS.Model.Declaration, Declaration>();
-            Mapper.CreateMap<ExCSS.Model.RuleSet, RuleSet>();
-            Mapper.CreateMap<ExCSS.Model.Selector, Selector>();
-            Mapper.CreateMap<ExCSS.Model.SimpleSelector, SimpleSelector>()
-                  .ForMember(dest => dest.Class, opt => opt.MapFrom(src => GetElementData(src.Class, ElementDataType.Class)))
-                  .ForMember(dest => dest.ID, opt => opt.MapFrom(src => GetElementData(src.ID, ElementDataType.ID)))
-                  .ForMember(dest => dest.ElementName, opt => opt.MapFrom(src => GetElementData(src.ElementName, ElementDataType.ElementName)))
-                  .ForMember(dest => dest.Pseudo, opt => opt.MapFrom(src => GetElementData(src.Pseudo, ElementDataType.Pseudo)));
+            Mapper.CreateMap<ExCSS.Model.Directive, Directive>().ConvertUsing(d => new Directive(d)
+            {
+                Directives = Mapper.Map<List<Directive>>(d.Directives),
+                RuleSets = Mapper.Map<List<RuleSet>>(d.RuleSets) 
+            });
+            Mapper.CreateMap<ExCSS.Model.RuleSet, RuleSet>().ConvertUsing(r => new RuleSet(r)
+            {
+                Selectors = Mapper.Map<List<Selector>>(r.Selectors)
+            });
+            Mapper.CreateMap<ExCSS.Model.Selector, Selector>().ConvertUsing(s => new Selector(s)
+            {
+                SimpleSelectors = Mapper.Map<List<SimpleSelector>>(s.SimpleSelectors)
+            });
+            Mapper.CreateMap<ExCSS.Model.SimpleSelector, SimpleSelector>().ConvertUsing(s => new SimpleSelector(s)
+            {
+                Child = Mapper.Map<SimpleSelector>(s.Child)
+            });
 
-            Mapper.CreateMap<ExCSS.Stylesheet, Stylesheet>()
-                  .ForMember(dest => dest.MatchedXpathes, opt => opt.MapFrom(src => new Dictionary<int, string>()));
-        }
-
-        private static ElementData GetElementData(string s, ElementDataType elementDataType)
-        {
-            var edm = new ElementDataManager(new SpecificityCounter());
-            return edm.GetElementDataBy(s, elementDataType);
+            Mapper.CreateMap<ExCSS.Stylesheet, Stylesheet>().ConvertUsing(s => new Stylesheet(s)
+            {
+                Directives = Mapper.Map<List<Directive>>(s.Directives),
+                RuleSets = Mapper.Map<List<RuleSet>>(s.RuleSets)
+            });
         }
     }
 }
