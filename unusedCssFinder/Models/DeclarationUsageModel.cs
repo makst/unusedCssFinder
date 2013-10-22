@@ -29,5 +29,21 @@ namespace unusedCssFinder.Models
                 return false;
             }
         }
+
+        public bool IsOverriden
+        {
+            get
+            {
+                if (IsNotUsed)
+                {
+                    return false;
+                }
+                if (HtmlNodeUsageTypes.Values.All(v => v == DeclarationUsageType.Overriden))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
     }
 }
