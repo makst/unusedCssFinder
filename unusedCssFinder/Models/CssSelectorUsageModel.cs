@@ -1,15 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using ExCSS.Model;
+using unusedCssFinder.CssData.ExCssModelsWrappers;
 
 namespace unusedCssFinder.Models
 {
     public class CssSelectorUsageModel
     {
+        private List<string> _matchedSelectors = new List<string>();
+
+        private List<DeclarationUsageModel> _declarationUsageModel = new List<DeclarationUsageModel>();
+
         public Selector Selector { get; set; }
 
-        public List<DeclarationUsageModel> DeclarationUsageModel { get; set; }
+        public SelectorDescriptor SelectorDescriptor { get; set; }
+
+        public List<string> MatchedSelectors { get { return _matchedSelectors; } set { _matchedSelectors = value; } }
+
+        public List<DeclarationUsageModel> DeclarationUsageModel { get { return _declarationUsageModel; } set { _declarationUsageModel = value; } }
 
         public bool IsNotUsed
         {
