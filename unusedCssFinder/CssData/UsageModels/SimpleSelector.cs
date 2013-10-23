@@ -2,7 +2,7 @@
 using System.Linq;
 using ExCSS.Model;
 
-namespace unusedCssFinder.CssData.ExCssModelsWrappers
+namespace unusedCssFinder.CssData.UsageModels
 {
     public class SimpleSelector
     {

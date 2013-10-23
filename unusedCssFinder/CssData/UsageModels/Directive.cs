@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using ExCSS.Model;
-using RuleSet = unusedCssFinder.CssData.ExCssModelsWrappers.RuleSet;
 
-namespace unusedCssFinder.CssData.ExCssModelsWrappers
+namespace unusedCssFinder.CssData.UsageModels
 {
     public class Directive
     {
@@ -25,6 +23,6 @@ namespace unusedCssFinder.CssData.ExCssModelsWrappers
         public List<Medium> Mediums { get { return _directive.Mediums; } }
         public List<Directive> Directives { get; set; }
         public List<RuleSet> RuleSets { get; set; }
-        public List<Declaration> Declarations { get { return _directive.Declarations; } }
+        public List<Declaration> Declarations { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace unusedCssFinder.CssData.ExCssModelsWrappers
+namespace unusedCssFinder.CssData.UsageModels
 {
     public class Stylesheet
     {

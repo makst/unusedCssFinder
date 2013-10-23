@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using ExCSS.Model;
 
-namespace unusedCssFinder.CssData.ExCssModelsWrappers
+namespace unusedCssFinder.CssData.UsageModels
 {
     public class RuleSet
     {
@@ -12,8 +11,8 @@ namespace unusedCssFinder.CssData.ExCssModelsWrappers
             _ruleSet = ruleSet;
         }
 
-        public new List<Declaration> Declarations { get { return _ruleSet.Declarations; } }
-        public new List<Selector> Selectors { get; set; }
+        public List<Declaration> Declarations { get; set; }
+        public List<Selector> Selectors { get; set; }
 
         public override string ToString()
         {

@@ -1,4 +1,4 @@
-namespace unusedCssFinder.Models
+namespace unusedCssFinder.CssData.UsageModels
 {
     public enum DeclarationUsageType
     {

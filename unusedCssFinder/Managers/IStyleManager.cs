@@ -1,5 +1,4 @@
-﻿using System;
-using ExCSS;
+﻿using ExCSS;
 
 namespace unusedCssFinder.Managers
 {

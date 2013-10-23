@@ -1,7 +1,4 @@
-﻿using unusedCssFinder.CssData;
-using unusedCssFinder.CssData.ExCssModelsWrappers;
-
-namespace unusedCssFinder.CssData
+﻿namespace unusedCssFinder.CssData
 {
     public interface IElementData
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
-using unusedCssFinder.CssData.ExCssModelsWrappers;
+using unusedCssFinder.CssData.UsageModels;
 
 namespace unusedCssFinder
 {
@@ -8,14 +8,31 @@ namespace unusedCssFinder
     {
         public static void Init()
         {
+            Mapper.CreateMap<ExCSS.Model.Declaration, Declaration>().ConvertUsing(d => new Declaration(d));
             Mapper.CreateMap<ExCSS.Model.Directive, Directive>().ConvertUsing(d => new Directive(d)
             {
                 Directives = Mapper.Map<List<Directive>>(d.Directives),
-                RuleSets = Mapper.Map<List<RuleSet>>(d.RuleSets) 
+                RuleSets = Mapper.Map<List<RuleSet>>(d.RuleSets),
+                Declarations = Mapper.Map<List<Declaration>>(d.Declarations) 
             });
-            Mapper.CreateMap<ExCSS.Model.RuleSet, RuleSet>().ConvertUsing(r => new RuleSet(r)
+            Mapper.CreateMap<ExCSS.Model.RuleSet, RuleSet>().ConvertUsing((r) =>
             {
-                Selectors = Mapper.Map<List<Selector>>(r.Selectors)
+                var ruleSet = new RuleSet(r)
+                {
+                    Selectors = Mapper.Map<List<Selector>>(r.Selectors),
+                    Declarations = Mapper.Map<List<Declaration>>(r.Declarations)
+                };
+                foreach (var selector in ruleSet.Selectors)
+                {
+                    var s = Mapper.Map<Selector>(selector);
+                    s.RuleSet = ruleSet;
+                }
+                foreach (var declaration in ruleSet.Declarations)
+                {
+                    var d = Mapper.Map<Declaration>(declaration);
+                    d.RuleSet = ruleSet;
+                }
+                return ruleSet;
             });
             Mapper.CreateMap<ExCSS.Model.Selector, Selector>().ConvertUsing(s => new Selector(s)
             {
