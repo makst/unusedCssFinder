@@ -1,6 +1,6 @@
-﻿using ExCSS.Model;
-using unusedCssFinder.Managers;
-using unusedCssFinder.Utils;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ExCSS.Model;
 
 namespace unusedCssFinder.CssData.ExCssModelsWrappers
 {
@@ -8,61 +8,80 @@ namespace unusedCssFinder.CssData.ExCssModelsWrappers
     {
         private ExCSS.Model.SimpleSelector _simpleSelector;
         private Specificity _specificity;
-        private ElementData _elementName;
-        private ElementData _class;
-        private ElementData _id;
-        private ElementData _pseudo;
-        private ElementDataManager _elementDataManager;
-        private SpecificityCounter _specificityCounter;
+        private ElementName _elementName;
+        private ElementId _id;
+        private ElementClass _class;
+        private ElementAttribute _attribute;
+        private ElementPseudo _pseudo;
+        private List<IElementData> _elementDatas = new List<IElementData>();
 
         public SimpleSelector(ExCSS.Model.SimpleSelector simpleSelector)
         {
             _simpleSelector = simpleSelector;
-            _specificityCounter = new SpecificityCounter();
-            _elementDataManager = new ElementDataManager(_specificityCounter);
+            _elementDatas.Add(this.ElementName);
+            _elementDatas.Add(this.ID);
+            _elementDatas.Add(this.Class);
+            _elementDatas.Add(this.Attribute);
+            _elementDatas.Add(this.Pseudo);
         }
 
-        public ElementData ElementName
+        public ElementName ElementName
         {
             get
             {
+                if (string.IsNullOrEmpty(_simpleSelector.ElementName))
+                {
+                    return null;
+                }
                 if (_elementName == null)
                 {
-                    _elementName = _elementDataManager.GetElementDataBy(_simpleSelector.ElementName, ElementDataType.ElementName);
+                    _elementName = new ElementName(_simpleSelector.ElementName);
                 }
                 return _elementName;
             }
         }
 
-        public ElementData ID
+        public ElementId ID
         {
             get
             {
+                if (string.IsNullOrEmpty(_simpleSelector.ID))
+                {
+                    return null;
+                }
                 if (_id == null)
                 {
-                    _id = _elementDataManager.GetElementDataBy(_simpleSelector.ID, ElementDataType.ID);
+                    _id = new ElementId(_simpleSelector.ID);
                 }
                 return _id;
             }
         }
-        public ElementData Class
+        public ElementClass Class
         {
             get
             {
+                if (string.IsNullOrEmpty(_simpleSelector.Class))
+                {
+                    return null;
+                }
                 if (_class == null)
                 {
-                    _class = _elementDataManager.GetElementDataBy(_simpleSelector.Class, ElementDataType.Class);
+                    _class = new ElementClass(_simpleSelector.Class);
                 }
                 return _class;
             }
         }
-        public ElementData Pseudo
+        public ElementPseudo Pseudo
         {
             get
             {
+                if (string.IsNullOrEmpty(_simpleSelector.Pseudo))
+                {
+                    return null;
+                }
                 if (_pseudo == null)
                 {
-                    _pseudo = _elementDataManager.GetElementDataBy(_simpleSelector.Pseudo, ElementDataType.Pseudo);
+                    _pseudo = new ElementPseudo(_simpleSelector.Pseudo);
                 }
                 return _pseudo;
             }
@@ -70,11 +89,19 @@ namespace unusedCssFinder.CssData.ExCssModelsWrappers
 
         public SimpleSelector Child { get; set; }
 
-        public Attribute Attribute
+        public ElementAttribute Attribute
         {
             get
             {
-                return _simpleSelector.Attribute;
+                if (_simpleSelector.Attribute == null)
+                {
+                    return null;
+                }
+                if (_attribute == null)
+                {
+                    _attribute = new ElementAttribute(_simpleSelector.Attribute);
+                }
+                return _attribute;
             }
         }
 
@@ -108,7 +135,11 @@ namespace unusedCssFinder.CssData.ExCssModelsWrappers
             {
                 if (_specificity == null)
                 {
-                    _specificity = _specificityCounter.GetSpecificityOfSelector(this);
+                    _specificity = _elementDatas.First(e => e != null).Specificity;
+                    if (this.Child != null)
+                    {
+                        _specificity += Child.Specificity;
+                    }
                 }
                 return _specificity;
             }
