@@ -81,6 +81,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThirdParty\css2xpath.cs" />
     <Compile Include="Utils\DependencyResolver.cs" />
+    <Compile Include="Utils\SelectorsFixer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

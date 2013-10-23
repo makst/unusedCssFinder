@@ -25,7 +25,7 @@ namespace unusedCssFinder
 
         static void Main(string[] args)
         {
-            var baseUri = new Uri("http://habrahabr.ru");
+            var baseUri = new Uri("http://trinixy.ru");
             var htmlDocument = _htmlManager.GetHtmlDocument(baseUri);
             var styleIdStylesheets = _htmlManager.GetDocumentStylesheets(baseUri, htmlDocument);
 
