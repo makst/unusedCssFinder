@@ -4,6 +4,7 @@ using System.Linq;
 using HtmlAgilityPack;
 using ThirdParty.MostThingsWeb;
 using unusedCssFinder.CssData.UsageModels;
+using unusedCssFinder.Utils;
 
 namespace unusedCssFinder.HtmlData
 {
@@ -37,8 +38,13 @@ namespace unusedCssFinder.HtmlData
         {
             try
             {
-                var xpath = css2xpath.Transform(selector.ToString());
+                var selectorToUse = SelectorsFixer.GetFixedSelector(selector);
+                var xpath = css2xpath.Transform(selectorToUse);
                 var matchedNodes = HtmlDocument.DocumentNode.SelectNodes(xpath);
+                if (matchedNodes == null)
+                {
+                    return;
+                }
                 foreach (var matchedNode in matchedNodes)
                 {
                     AddMapping(matchedNode, selector.RuleSet);

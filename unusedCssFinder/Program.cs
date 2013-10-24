@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using unusedCssFinder.CssData.UsageModels;
@@ -11,23 +10,15 @@ namespace unusedCssFinder
 {
     class Program
     {
-        private static IHtmlManager _htmlManager;
-        private static IStyleManager _cssManager;
-
-        static Program()
-        {
-            AutomapperConfig.Init();
-            var dependencyResolver = new DependencyResolver();
-            _htmlManager = dependencyResolver.Resolve<IHtmlManager>();
-            _cssManager = dependencyResolver.Resolve<IStyleManager>();
-        }
-
         static void Main(string[] args)
         {
-            var baseUri = new Uri("http://trinixy.ru");
-            var htmlDocument = _htmlManager.GetHtmlDocument(baseUri);
+            AutomapperConfig.Init();
+
+            var htmlManager = new HtmlManager(new StyleManager());
+            var baseUri = new Uri("http://uawebchallenge.com");
+            var htmlDocument = htmlManager.GetHtmlDocument(baseUri);
             var docWithStyles = new HtmlDocumentWithStyles { HtmlDocument = htmlDocument };
-            var styleIdStylesheets = _htmlManager.GetDocumentStylesheets(baseUri, htmlDocument);
+            var styleIdStylesheets = htmlManager.GetDocumentStylesheets(baseUri, htmlDocument);
 
             var styleIDExtendedStylesheets = styleIdStylesheets
                     .ToDictionary(s => s.Key, s => Mapper.Map<Stylesheet>(s.Value));
@@ -37,12 +28,17 @@ namespace unusedCssFinder
                 docWithStyles.ApplySheet(sheet);
             }
 
-            var unusedSelectors = styleIDExtendedStylesheets.Values.SelectMany(x => x.RuleSets)
-                                                            .Select(x => x.Selector).Where(x => x.IsNotUsed);
-            var alwaysOverridenSelectors = styleIDExtendedStylesheets.Values.SelectMany(x => x.RuleSets)
-                                                            .Select(x => x.Selector).Where(x => x.IsOverriden);
-            var alwaysOverridenDeclarations = styleIDExtendedStylesheets.Values.SelectMany(x => x.RuleSets)
-                                                            .SelectMany(x => x.Declarations).Where(x => x.IsOverriden);
+            var ruleSets = styleIDExtendedStylesheets.Values.SelectMany(x => x.RuleSets).ToList();
+            var selectorsInfo = ruleSets.Select(x => x.Selector).ToList();
+
+            var unusedSelectors = selectorsInfo.Where(x => x.IsNotUsed);
+            var unusedSelectorsCount = unusedSelectors.Count();
+
+            var alwaysOverridenSelectors = selectorsInfo.Where(x => x.IsOverriden);
+            var alwaysOverridenSelectorsCount = alwaysOverridenSelectors.Count();
+
+            var alwaysOverridenDeclarations = ruleSets.SelectMany(x => x.Declarations).Where(x => x.IsOverriden);
+            var alwaysOverridenDeclarationsCount = alwaysOverridenDeclarations.Count();
         }
     }
 }
