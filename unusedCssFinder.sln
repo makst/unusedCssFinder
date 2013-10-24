@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnusedCssFinder", "unusedCssFinder\UnusedCssFinder.csproj", "{96FD1A2B-C414-4989-A1F9-FEA5C8986574}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unusedCssFinder", "unusedCssFinder\unusedCssFinder.csproj", "{96FD1A2B-C414-4989-A1F9-FEA5C8986574}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
