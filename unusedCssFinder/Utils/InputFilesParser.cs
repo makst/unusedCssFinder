@@ -12,25 +12,25 @@ namespace unusedCssFinder.Utils
             addresses = null;
             try
             {
-                var res = new List<Uri>();
+                var tempAddresses = new List<Uri>();
                 foreach (var address in addressStrings)
                 {
-                    res.Add(new Uri(address));
+                    tempAddresses.Add(new Uri(address));
                 }
-                if (res.All(u => u.IsFile && u.AbsolutePath.EndsWith("html")))
+
+                var firstUri = tempAddresses.First();
+                if (addressStrings.Count() == 1 && firstUri.IsFile && firstUri.AbsolutePath.EndsWith("html"))
                 {
-                    foreach (var address in res)
+                    if (!File.Exists(firstUri.AbsolutePath))
                     {
-                        if (!File.Exists(address.AbsolutePath))
-                        {
-                            return false;
-                        }
+                        return false;
                     }
                 }
-                else if (!res.All(u => (u.Scheme == "http" || u.Scheme == "https") && u.Host == res.First().Host))
+                else if (!tempAddresses.All(u => (u.Scheme == "http" || u.Scheme == "https") && u.Host == firstUri.Host))
                 {
                     return false;
                 }
+                addresses = tempAddresses;
             }
             catch (Exception e)
             {

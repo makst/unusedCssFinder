@@ -15,8 +15,8 @@ namespace unusedCssFinder
     {
         class AppOptions
         {
-            [ValueList(typeof(List<string>))]
-            public IList<string> Input { get; set; }
+            [OptionArray('i', "input", Required = true, HelpText = "Input - valid urls with one host or existing locally html file")]
+            public string[] Input { get; set; }
 
             [HelpOption]
             public string GetUsage()
@@ -34,7 +34,9 @@ namespace unusedCssFinder
                 List<Uri> addresses;
                 if (!InputFilesParser.TryGetAddresses(options.Input, out addresses))
                 {
-                    Console.WriteLine("Tool excepts only valid urls within one host or existing locally html files.");
+                    WriteErrorHeaderToConsole("Input files parsing error!");
+                    Console.WriteLine("As an input parameter -i " + 
+                    "tool excepts only valid urls with one host or existing locally html file.");
                 }
             }
 
@@ -65,6 +67,14 @@ namespace unusedCssFinder
 
             //var alwaysOverridenDeclarations = ruleSets.SelectMany(x => x.Declarations).Where(x => x.IsOverriden);
             //var alwaysOverridenDeclarationsCount = alwaysOverridenDeclarations.Count();
+        }
+
+        private static void WriteErrorHeaderToConsole(string errorHeader)
+        {
+            var oldBackgroundColor = Console.BackgroundColor;
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.WriteLine(errorHeader);
+            Console.BackgroundColor = oldBackgroundColor;
         }
     }
 }
