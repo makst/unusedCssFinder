@@ -79,7 +79,14 @@ namespace unusedCssFinder.CssData.UsageModels
             }
             if (string.Equals(Name, newDeclaration.Name, StringComparison.InvariantCultureIgnoreCase))
             {
-                HtmlNodeUsageTypes[existingNode] = DeclarationUsageType.Overriden;
+                if (Important)
+                {
+                    return;
+                }
+                if (newDeclaration.RuleSet.Selector.Specificity > RuleSet.Selector.Specificity )
+                {
+                    HtmlNodeUsageTypes[existingNode] = DeclarationUsageType.Overriden;
+                }
             }
         }
 

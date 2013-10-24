@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace unusedCssFinder.CssData.UsageModels
 {
@@ -12,11 +13,13 @@ namespace unusedCssFinder.CssData.UsageModels
         }
 
         public List<Declaration> Declarations { get; set; }
-        public List<Selector> Selectors { get; set; }
+        public Selector Selector { get; set; }
 
         public override string ToString()
         {
-            return _ruleSet.ToString();
+            var declarationList = Declarations.Select(d => d.ToString());
+            var declarations = string.Join(" ", declarationList);
+            return Selector + "{" + declarations + "}";
         }
     }
 }

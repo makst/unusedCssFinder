@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using HtmlAgilityPack;
-using ThirdParty.MostThingsWeb;
-using unusedCssFinder.HtmlData;
 
 namespace unusedCssFinder.CssData.UsageModels
 {
@@ -44,6 +40,10 @@ namespace unusedCssFinder.CssData.UsageModels
         {
             get
             {
+                if (MatchErrorOccured)
+                {
+                    return false;
+                }
                 if (RuleSet.Declarations.All(d => d.IsNotUsed))
                 {
                     return true;
@@ -56,6 +56,10 @@ namespace unusedCssFinder.CssData.UsageModels
         {
             get
             {
+                if (MatchErrorOccured)
+                {
+                    return false;
+                }
                 if (IsNotUsed)
                 {
                     return false;
