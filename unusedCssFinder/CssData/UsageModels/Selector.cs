@@ -10,7 +10,6 @@ namespace unusedCssFinder.CssData.UsageModels
     public class Selector
     {
         private ExCSS.Model.Selector _selector;
-        private List<HtmlNode> _matchedHtmlNodes = new List<HtmlNode>();
 
         public Selector(ExCSS.Model.Selector selector)
         {
@@ -20,8 +19,6 @@ namespace unusedCssFinder.CssData.UsageModels
         public RuleSet RuleSet { get; set; }
 
         public bool MatchErrorOccured { get; set; }
-
-        public List<HtmlNode> MatchedHtmlNodes { get { return _matchedHtmlNodes; } set { _matchedHtmlNodes = value; } } 
 
         public List<SimpleSelector> SimpleSelectors { get; set; }
 
@@ -47,10 +44,6 @@ namespace unusedCssFinder.CssData.UsageModels
         {
             get
             {
-                if (_htmlNodeXpathes.Count == 0)
-                {
-                    return true;
-                }
                 if (RuleSet.Declarations.All(d => d.IsNotUsed))
                 {
                     return true;
@@ -72,30 +65,6 @@ namespace unusedCssFinder.CssData.UsageModels
                     return true;
                 }
                 return false;
-            }
-        }
-
-        public void ApplyToHtml(HtmlDocumentWithStyles htmlDocumentWithStyles)
-        {
-            try
-            {
-                var xpath = css2xpath.Transform(this.ToString());
-                var matchedNodes = htmlDocumentWithStyles.HtmlDocument.DocumentNode.SelectNodes(xpath);
-                foreach (var matchedNode in matchedNodes)
-                {
-                    if (!MatchedHtmlNodes.Any(h => String.Equals(xpath, h.XPath, StringComparison.InvariantCulture)))
-                    {
-                        MatchedHtmlNodes.Add(matchedNode);
-                        foreach (var declaration in RuleSet.Declarations)
-                        {
-                            declaration.ApplyToHtmlNode(matchedNode);
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                MatchErrorOccured = true;
             }
         }
     }

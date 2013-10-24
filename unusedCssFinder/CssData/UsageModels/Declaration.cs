@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ExCSS.Model;
 using HtmlAgilityPack;
@@ -69,9 +70,27 @@ namespace unusedCssFinder.CssData.UsageModels
             return _declaration.ToString();
         }
 
-        public void ApplyToHtmlNode(HtmlNode matchedNode)
+        public void TryToOverrideBy(HtmlNode htmlNode, Declaration newDeclaration)
         {
-            HtmlNodeUsageTypes.Add(matchedNode, DeclarationUsageType.Used);
+            var existingNode = HtmlNodeUsageTypes.Keys.FirstOrDefault(k => ReferenceEquals(k, htmlNode));
+            if (existingNode == null)
+            {
+                return;
+            }
+            if (string.Equals(Name, newDeclaration.Name, StringComparison.InvariantCultureIgnoreCase))
+            {
+                HtmlNodeUsageTypes[existingNode] = DeclarationUsageType.Overriden;
+            }
+        }
+
+        public void ApplyToHtmlNode(HtmlNode htmlNode)
+        {
+            var existingNode = HtmlNodeUsageTypes.Keys.FirstOrDefault(k => ReferenceEquals(k, htmlNode));
+            if (existingNode != null)
+            {
+                throw new ArgumentException("html node is currently in use");
+            }
+            HtmlNodeUsageTypes.Add(htmlNode, DeclarationUsageType.Used);
         }
     }
 }

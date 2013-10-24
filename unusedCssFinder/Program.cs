@@ -32,6 +32,17 @@ namespace unusedCssFinder
             var styleIDExtendedStylesheets = styleIdStylesheets
                     .ToDictionary(s => s.Key, s => Mapper.Map<Stylesheet>(s.Value));
 
+            foreach (var sheet in styleIDExtendedStylesheets.Values)
+            {
+                docWithStyles.ApplySheet(sheet);
+            }
+
+            var unusedSelectors = styleIDExtendedStylesheets.Values.SelectMany(x => x.RuleSets)
+                                                            .SelectMany(x => x.Selectors).Where(x => x.IsNotUsed);
+            var alwaysOverridenSelectors = styleIDExtendedStylesheets.Values.SelectMany(x => x.RuleSets)
+                                                            .SelectMany(x => x.Selectors).Where(x => x.IsOverriden);
+            var alwaysOverridenDeclarations = styleIDExtendedStylesheets.Values.SelectMany(x => x.RuleSets)
+                                                            .SelectMany(x => x.Declarations).Where(x => x.IsOverriden);
         }
     }
 }

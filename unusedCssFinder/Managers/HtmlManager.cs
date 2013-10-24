@@ -21,6 +21,7 @@ namespace unusedCssFinder.Managers
         {
             var client = new WebClient();
             var doc = new HtmlDocument();
+            var d = client.DownloadString(uri);
             doc.Load(client.OpenRead(uri));
             return doc;
         }
