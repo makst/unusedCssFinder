@@ -3,7 +3,7 @@ using ExCSS;
 
 namespace unusedCssFinder.Managers
 {
-    public class StyleManager : IStyleManager
+    public class StyleManager
     {
         public Stylesheet GetStylesheetFromAddress(string address)
         {

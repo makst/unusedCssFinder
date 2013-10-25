@@ -21,21 +21,14 @@ namespace unusedCssFinder
             var options = new AppOptions();
             if (Parser.Default.ParseArguments(args, options))
             {
-                List<Uri> parsedUris;
-                var validationResult = options.ValidateAndParseInputFiles(out parsedUris);
+                var validationResult = options.ValidateAndParseInputFiles();
                 if (!validationResult.IsValid)
                 {
                     WriteErrorHeaderToConsole(validationResult.Error);
                     Console.WriteLine(validationResult.Message);
                     return;
                 }
-
-                var htmlManager = new HtmlManager(new StyleManager());
-                List<HtmlDocument> htmlDocuments = new List<HtmlDocument>();
-                foreach (var address in parsedUris)
-                {
-                    htmlDocuments.Add(htmlManager.GetHtmlDocument(address)); 
-                }
+                Execute(options);
             }
 
             //AutomapperConfig.Init();
@@ -65,6 +58,16 @@ namespace unusedCssFinder
 
             //var alwaysOverridenDeclarations = ruleSets.SelectMany(x => x.Declarations).Where(x => x.IsOverriden);
             //var alwaysOverridenDeclarationsCount = alwaysOverridenDeclarations.Count();
+        }
+
+        private static void Execute(AppOptions options)
+        {
+            var htmlManager = new HtmlManager(new StyleManager());
+            List<HtmlDocument> htmlDocuments = new List<HtmlDocument>();
+            foreach (var address in options.ParsedUris)
+            {
+                htmlDocuments.Add(htmlManager.GetHtmlDocument(address));
+            }
         }
 
         private static void WriteErrorHeaderToConsole(string errorHeader)

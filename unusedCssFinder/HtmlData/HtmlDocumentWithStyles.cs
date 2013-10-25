@@ -30,7 +30,7 @@ namespace unusedCssFinder.HtmlData
         {
             foreach (var ruleSet in sheet.RuleSets)
             {
-                    ApplySelector(ruleSet.Selector);
+                ApplySelector(ruleSet.Selector);
             }
         }
 

@@ -8,7 +8,7 @@ using HtmlAgilityPack;
 
 namespace unusedCssFinder.Managers
 {
-    public class HtmlManager : IHtmlManager
+    public class HtmlManager
     {
         private StyleManager _styleManager;
 
