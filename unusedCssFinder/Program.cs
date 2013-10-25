@@ -4,28 +4,17 @@ using System.Linq;
 using AutoMapper;
 using CommandLine;
 using CommandLine.Text;
+using HtmlAgilityPack;
 using unusedCssFinder.CssData.UsageModels;
 using unusedCssFinder.HtmlData;
 using unusedCssFinder.Managers;
+using unusedCssFinder.Models;
 using unusedCssFinder.Utils;
 
 namespace unusedCssFinder
 {
     class Program
     {
-        class AppOptions
-        {
-            [OptionArray('i', "input", Required = true, HelpText = "Input - valid urls with one host or existing locally html file")]
-            public string[] Input { get; set; }
-
-            [HelpOption]
-            public string GetUsage()
-            {
-                return HelpText.AutoBuild(this,
-                  (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
-            }
-        }
-
         static void Main(string[] args)
         {
             var options = new AppOptions();
@@ -37,6 +26,14 @@ namespace unusedCssFinder
                     WriteErrorHeaderToConsole("Input files parsing error!");
                     Console.WriteLine("As an input parameter -i " + 
                     "tool excepts only valid urls with one host or existing locally html file.");
+                    return;
+                }
+
+                var htmlManager = new HtmlManager(new StyleManager());
+                List<HtmlDocument> htmlDocuments = new List<HtmlDocument>();
+                foreach (var address in addresses)
+                {
+                    htmlDocuments.Add(htmlManager.GetHtmlDocument(address)); 
                 }
             }
 

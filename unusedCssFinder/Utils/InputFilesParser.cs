@@ -18,15 +18,17 @@ namespace unusedCssFinder.Utils
                     tempAddresses.Add(new Uri(address));
                 }
 
-                var firstUri = tempAddresses.First();
-                if (addressStrings.Count() == 1 && firstUri.IsFile && firstUri.AbsolutePath.EndsWith("html"))
+                if (tempAddresses.All(t => t.IsFile))
                 {
-                    if (!File.Exists(firstUri.AbsolutePath))
+                    foreach (var tempAddress in tempAddresses)
                     {
-                        return false;
+                        if (!File.Exists(tempAddress.AbsolutePath))
+                        {
+                            return false;
+                        }
                     }
                 }
-                else if (!tempAddresses.All(u => (u.Scheme == "http" || u.Scheme == "https") && u.Host == firstUri.Host))
+                else if (!tempAddresses.All(u => u.Scheme == "http" || u.Scheme == "https"))
                 {
                     return false;
                 }
