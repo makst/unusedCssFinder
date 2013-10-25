@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CommandLine;
 using CommandLine.Text;
 using unusedCssFinder.Utils;
@@ -8,6 +9,9 @@ namespace unusedCssFinder.Models.CommandLine
 {
     public class AppOptions
     {
+        [ParserState]
+        public IParserState LastParserState { get; set; }
+
         [OptionArray('i', "input", Required = true, HelpText = "Input - valid urls or existing locally html files.")]
         public string[] Input { get; set; }
 
@@ -23,6 +27,11 @@ namespace unusedCssFinder.Models.CommandLine
         [HelpOption]
         public string GetUsage()
         {
+            if (LastParserState.Errors.Any())
+            {
+                return "\nInput parameters cannot be parsed\n";
+            }
+
             var defaultHelp = HelpText.AutoBuild(this,
               (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
             return defaultHelp.ToString() + @"
