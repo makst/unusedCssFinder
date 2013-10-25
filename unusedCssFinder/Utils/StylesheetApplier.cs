@@ -10,9 +10,9 @@ namespace unusedCssFinder.Utils
 {
     public class StylesheetApplier
     {
-        private Dictionary<HtmlNode, List<RuleSet>> _htmlNodesRuleSets = new Dictionary<HtmlNode, List<RuleSet>>();
+        private Dictionary<HtmlNodeModel, List<RuleSet>> _htmlNodesRuleSets = new Dictionary<HtmlNodeModel, List<RuleSet>>();
 
-        public Dictionary<HtmlNode, List<RuleSet>> HtmlNodesRuleSets
+        public Dictionary<HtmlNodeModel, List<RuleSet>> HtmlNodesRuleSets
         {
             get
             {
@@ -45,7 +45,12 @@ namespace unusedCssFinder.Utils
                 }
                 foreach (var matchedNode in matchedNodes)
                 {
-                    AddMapping(matchedNode, selector.RuleSet);
+                    var matchedNodeModel = new HtmlNodeModel
+                    {
+                        HtmlNode = matchedNode,
+                        HtmlPage = htmlPage
+                    };
+                    AddMapping(matchedNodeModel, selector.RuleSet);
                 }
             }
             catch (Exception)
@@ -54,38 +59,38 @@ namespace unusedCssFinder.Utils
             }
         }
 
-        private void AddMapping(HtmlNode htmlNode, RuleSet ruleSet)
+        private void AddMapping(HtmlNodeModel htmlNodeModel, RuleSet ruleSet)
         {
-            var existingNode = HtmlNodesRuleSets.Keys.FirstOrDefault(k => ReferenceEquals(k, htmlNode));
+            var existingNode = HtmlNodesRuleSets.Keys.FirstOrDefault(k => k.Equals(htmlNodeModel));
             if (existingNode == null)
             {
-                HtmlNodesRuleSets.Add(htmlNode, new List<RuleSet> { ruleSet });
+                HtmlNodesRuleSets.Add(htmlNodeModel, new List<RuleSet> { ruleSet });
             }
             {
-                ChangeUsageOfExistingRules(htmlNode, ruleSet);
+                ChangeUsageOfExistingRules(htmlNodeModel, ruleSet);
             }
-            ApplyDeclarationsToNode(ruleSet.Declarations, htmlNode);
-            HtmlNodesRuleSets[htmlNode].Add(ruleSet);
+            ApplyDeclarationsToNode(ruleSet.Declarations, htmlNodeModel);
+            HtmlNodesRuleSets[htmlNodeModel].Add(ruleSet);
         }
 
-        private void ApplyDeclarationsToNode(List<Declaration> declarations, HtmlNode htmlNode)
+        private void ApplyDeclarationsToNode(List<Declaration> declarations, HtmlNodeModel htmlNodeModel)
         {
             foreach (var declaration in declarations)
             {
-                declaration.ApplyToHtmlNode(htmlNode);
+                declaration.ApplyToHtmlNode(htmlNodeModel);
             }
         }
 
-        private void ChangeUsageOfExistingRules(HtmlNode htmlNode, RuleSet newRuleSet)
+        private void ChangeUsageOfExistingRules(HtmlNodeModel htmlNodeModel, RuleSet newRuleSet)
         {
-            var htmlNodeRuleSets = HtmlNodesRuleSets[htmlNode];
+            var htmlNodeRuleSets = HtmlNodesRuleSets[htmlNodeModel];
             foreach (var htmlNodesRuleSet in htmlNodeRuleSets)
             {
-                ChangeUsageOfRuleDeclarations(htmlNodesRuleSet, newRuleSet, htmlNode);
+                ChangeUsageOfRuleDeclarations(htmlNodesRuleSet, newRuleSet, htmlNodeModel);
             }
         }
 
-        private void ChangeUsageOfRuleDeclarations(RuleSet usedRuleSet, RuleSet newRuleSet, HtmlNode htmlNode)
+        private void ChangeUsageOfRuleDeclarations(RuleSet usedRuleSet, RuleSet newRuleSet, HtmlNodeModel htmlNodeModel)
         {
             var usedRuleSetDeclarations = usedRuleSet.Declarations;
             var newRuleSetDeclarations = newRuleSet.Declarations;
@@ -93,7 +98,7 @@ namespace unusedCssFinder.Utils
             {
                 foreach (var newDeclaration in newRuleSetDeclarations)
                 {
-                    usedDeclaration.TryToOverrideBy(htmlNode, newDeclaration);
+                    usedDeclaration.TryToOverrideBy(htmlNodeModel, newDeclaration);
                 }
             }
         }

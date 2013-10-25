@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using ExCSS.Model;
-using HtmlAgilityPack;
+using unusedCssFinder.Models;
 
 namespace unusedCssFinder.CssData.UsageModels
 {
     public class Declaration
     {
         private ExCSS.Model.Declaration _declaration;
-        private Dictionary<HtmlNode, DeclarationUsageType> _htmlNodeUsageTypes = new Dictionary<HtmlNode, DeclarationUsageType>();
+        private Dictionary<HtmlNodeModel, DeclarationUsageType> _htmlNodeUsageTypes = new Dictionary<HtmlNodeModel, DeclarationUsageType>();
 
         public Declaration(ExCSS.Model.Declaration declaration)
         {
             _declaration = declaration;
         }
 
-        public Dictionary<HtmlNode, DeclarationUsageType> HtmlNodeUsageTypes
+        public RuleSet RuleSet { get; set; }
+        public string Name { get { return _declaration.Name; } }
+        public bool Important { get { return _declaration.Important; } }
+        public Expression Expression { get { return _declaration.Expression; } }
+
+        public Dictionary<HtmlNodeModel, DeclarationUsageType> HtmlNodeUsageTypes
         {
             get
             {
@@ -60,19 +65,35 @@ namespace unusedCssFinder.CssData.UsageModels
             }
         }
 
-        public RuleSet RuleSet { get; set; }
-        public string Name { get { return _declaration.Name; } }
-        public bool Important { get { return _declaration.Important; } }
-        public Expression Expression { get { return _declaration.Expression; } }
-
-        public override string ToString()
+        public bool IsNotUsedOnPage(HtmlPageModel htmlPage)
         {
-            return _declaration.ToString();
+            if (_htmlNodeUsageTypes.Keys.Count(n => n.HtmlPage == htmlPage) == 0)
+            {
+                return true;
+            }
+            if (_htmlNodeUsageTypes.Where(x => x.Key.HtmlPage == htmlPage).Select(d => d.Value).All(v => v == DeclarationUsageType.NotUsed))
+            {
+                return true;
+            }
+            return false;
         }
 
-        public void TryToOverrideBy(HtmlNode htmlNode, Declaration newDeclaration)
+        public bool IsOverridenOnPage(HtmlPageModel htmlPage)
         {
-            var existingNode = HtmlNodeUsageTypes.Keys.FirstOrDefault(k => ReferenceEquals(k, htmlNode));
+            if (IsNotUsedOnPage(htmlPage))
+            {
+                return true;
+            }
+            if (_htmlNodeUsageTypes.Where(x => x.Key.HtmlPage == htmlPage).Select(d => d.Value).All(v => v == DeclarationUsageType.Overriden))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void TryToOverrideBy(HtmlNodeModel htmlNodeModel, Declaration newDeclaration)
+        {
+            var existingNode = HtmlNodeUsageTypes.Keys.FirstOrDefault(k => k.Equals(htmlNodeModel));
             if (existingNode == null)
             {
                 return;
@@ -90,14 +111,19 @@ namespace unusedCssFinder.CssData.UsageModels
             }
         }
 
-        public void ApplyToHtmlNode(HtmlNode htmlNode)
+        public void ApplyToHtmlNode(HtmlNodeModel htmlNodeModel)
         {
-            var existingNode = HtmlNodeUsageTypes.Keys.FirstOrDefault(k => ReferenceEquals(k, htmlNode));
+            var existingNode = HtmlNodeUsageTypes.Keys.FirstOrDefault(k => k.Equals(htmlNodeModel));
             if (existingNode != null)
             {
                 throw new ArgumentException("html node is currently in use");
             }
-            HtmlNodeUsageTypes.Add(htmlNode, DeclarationUsageType.Used);
+            HtmlNodeUsageTypes.Add(htmlNodeModel, DeclarationUsageType.Used);
+        }
+
+        public override string ToString()
+        {
+            return _declaration.ToString();
         }
     }
 }
