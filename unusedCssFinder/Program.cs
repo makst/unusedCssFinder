@@ -24,8 +24,7 @@ namespace unusedCssFinder
                 if (!InputFilesParser.TryGetAddresses(options.Input, out addresses))
                 {
                     WriteErrorHeaderToConsole("Input files parsing error!");
-                    Console.WriteLine("As an input parameter -i " + 
-                    "tool excepts only valid urls with one host or existing locally html file.");
+                    Console.WriteLine("As an input parameter -i tool excepts only valid urls with one host or existing locally html file.");
                     return;
                 }
 
@@ -35,6 +34,9 @@ namespace unusedCssFinder
                 {
                     htmlDocuments.Add(htmlManager.GetHtmlDocument(address)); 
                 }
+            }
+            else {
+                Console.WriteLine("Input parameters cannot be parsed");
             }
 
             //AutomapperConfig.Init();
