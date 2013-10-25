@@ -73,7 +73,7 @@
     <Compile Include="CssData\UsageModels\SimpleSelector.cs" />
     <Compile Include="CssData\Specificity.cs" />
     <Compile Include="CssData\UsageModels\Stylesheet.cs" />
-    <Compile Include="HtmlData\HtmlDocumentWithStyles.cs" />
+    <Compile Include="Utils\StylesheetApplier.cs" />
     <Compile Include="Managers\HtmlManager.cs" />
     <Compile Include="Managers\StyleManager.cs" />
     <Compile Include="CssData\UsageModels\DeclarationUsageType.cs" />

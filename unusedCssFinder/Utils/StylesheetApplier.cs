@@ -4,15 +4,13 @@ using System.Linq;
 using HtmlAgilityPack;
 using ThirdParty.MostThingsWeb;
 using unusedCssFinder.CssData.UsageModels;
-using unusedCssFinder.Utils;
+using unusedCssFinder.Models;
 
-namespace unusedCssFinder.HtmlData
+namespace unusedCssFinder.Utils
 {
-    public class HtmlDocumentWithStyles
+    public class StylesheetApplier
     {
         private Dictionary<HtmlNode, List<RuleSet>> _htmlNodesRuleSets = new Dictionary<HtmlNode, List<RuleSet>>();
-
-        public HtmlDocument HtmlDocument { get; set; }
 
         public Dictionary<HtmlNode, List<RuleSet>> HtmlNodesRuleSets
         {
@@ -26,21 +24,21 @@ namespace unusedCssFinder.HtmlData
             }
         }
 
-        public void ApplySheet(Stylesheet sheet)
+        public void ApplySheetToHtmlPage(Stylesheet sheet, HtmlPageModel htmlPage)
         {
             foreach (var ruleSet in sheet.RuleSets)
             {
-                ApplySelector(ruleSet.Selector);
+                ApplySelector(htmlPage, ruleSet.Selector);
             }
         }
 
-        private void ApplySelector(Selector selector)
+        private void ApplySelector(HtmlPageModel htmlPage, Selector selector)
         {
             try
             {
                 var selectorToUse = SelectorsFixer.GetFixedSelector(selector);
                 var xpath = css2xpath.Transform(selectorToUse);
-                var matchedNodes = HtmlDocument.DocumentNode.SelectNodes(xpath);
+                var matchedNodes = htmlPage.CurrentPage.DocumentNode.SelectNodes(xpath);
                 if (matchedNodes == null)
                 {
                     return;

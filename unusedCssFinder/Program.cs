@@ -6,7 +6,6 @@ using CommandLine;
 using CommandLine.Text;
 using HtmlAgilityPack;
 using unusedCssFinder.CssData.UsageModels;
-using unusedCssFinder.HtmlData;
 using unusedCssFinder.Managers;
 using unusedCssFinder.Models;
 using unusedCssFinder.Models.CommandLine;

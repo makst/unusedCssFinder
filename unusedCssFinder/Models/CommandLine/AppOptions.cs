@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using CommandLine;
 using CommandLine.Text;
 using unusedCssFinder.Utils;
@@ -65,7 +64,7 @@ First of all tool analyzes specified urls. After that child urls are processed.
             {
                 result.IsValid = false;
                 result.Error = "input[files] parsing error!";
-                result.Message = "As an input parameter -i tool accepts only valid urls or existing locally html file.";
+                result.Message = "As an input parameter -i tool accepts only valid urls of one site or existing locally html file.";
                 return result;
             }
             ParsedUris = parsedUris;

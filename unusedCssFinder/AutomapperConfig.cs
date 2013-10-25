@@ -21,7 +21,7 @@ namespace unusedCssFinder
                 var ruleSets = new List<RuleSet>();
                 foreach (var selector in r.Selectors)
                 {
-                    var ruleSet = new RuleSet(r)
+                    var ruleSet = new RuleSet
                     {
                         Selector = Mapper.Map<Selector>(selector),
                         Declarations = Mapper.Map<List<Declaration>>(r.Declarations)
