@@ -1,7 +1,10 @@
-﻿using CommandLine;
+﻿using System;
+using System.Collections.Generic;
+using CommandLine;
 using CommandLine.Text;
+using unusedCssFinder.Utils;
 
-namespace unusedCssFinder.Models
+namespace unusedCssFinder.Models.CommandLine
 {
     public class AppOptions
     {
@@ -14,7 +17,7 @@ namespace unusedCssFinder.Models
         [Option('p', "maxPagesCount", Required = false, DefaultValue = 0, HelpText = "Maximum number of pages to analyze. 0 means only specified pages.")]
         public int MaxPagesCount { get; set; }
 
-        [Option('f', "outputFile", Required = true, HelpText = "Location of html file with results of analyzing.")]
+        [Option('f', "outputFile", Required = true, HelpText = "Location of html file with results of analyzing."), ParserState]
         public string OutputFile { get; set; }
 
         [HelpOption]
@@ -37,6 +40,31 @@ Important note:
 
 First of all tool analyzes specified urls. After that child urls are processed.
 ";
+        }
+
+        public ValidationResult ValidateAndParseInputFiles(out List<Uri> parsedUris)
+        {
+            parsedUris = null;
+            var result = new ValidationResult {IsValid = true};
+            try
+            {
+                var uri = new Uri(this.OutputFile);
+            }
+            catch (Exception)
+            {
+                result.IsValid = false;
+                result.Error = "outputFile parsing error!";
+                result.Message = "As an input parameter -f tool accepts only a valid path.";
+                return result;
+            }
+            if (!InputFilesParser.TryGetAddresses(this.Input, out parsedUris))
+            {
+                result.IsValid = false;
+                result.Error = "input[files] parsing error!";
+                result.Message = "As an input parameter -i tool accepts only valid urls with one host or existing locally html file.";
+                return result;
+            }
+            return result;
         }
     }
 }

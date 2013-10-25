@@ -9,6 +9,7 @@ using unusedCssFinder.CssData.UsageModels;
 using unusedCssFinder.HtmlData;
 using unusedCssFinder.Managers;
 using unusedCssFinder.Models;
+using unusedCssFinder.Models.CommandLine;
 using unusedCssFinder.Utils;
 
 namespace unusedCssFinder
@@ -20,23 +21,21 @@ namespace unusedCssFinder
             var options = new AppOptions();
             if (Parser.Default.ParseArguments(args, options))
             {
-                List<Uri> addresses;
-                if (!InputFilesParser.TryGetAddresses(options.Input, out addresses))
+                List<Uri> parsedUris;
+                var validationResult = options.ValidateAndParseInputFiles(out parsedUris);
+                if (!validationResult.IsValid)
                 {
-                    WriteErrorHeaderToConsole("Input files parsing error!");
-                    Console.WriteLine("As an input parameter -i tool excepts only valid urls with one host or existing locally html file.");
+                    WriteErrorHeaderToConsole(validationResult.Error);
+                    Console.WriteLine(validationResult.Message);
                     return;
                 }
 
                 var htmlManager = new HtmlManager(new StyleManager());
                 List<HtmlDocument> htmlDocuments = new List<HtmlDocument>();
-                foreach (var address in addresses)
+                foreach (var address in parsedUris)
                 {
                     htmlDocuments.Add(htmlManager.GetHtmlDocument(address)); 
                 }
-            }
-            else {
-                Console.WriteLine("Input parameters cannot be parsed");
             }
 
             //AutomapperConfig.Init();

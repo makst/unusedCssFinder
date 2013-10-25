@@ -79,7 +79,9 @@
     <Compile Include="Managers\IStyleManager.cs" />
     <Compile Include="Managers\StyleManager.cs" />
     <Compile Include="CssData\UsageModels\DeclarationUsageType.cs" />
-    <Compile Include="Models\AppOptions.cs" />
+    <Compile Include="Models\CommandLine\AppOptions.cs" />
+    <Compile Include="Models\CommandLine\ValidationResult.cs" />
+    <Compile Include="Models\HtmlDocumentModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThirdParty\css2xpath.cs" />
