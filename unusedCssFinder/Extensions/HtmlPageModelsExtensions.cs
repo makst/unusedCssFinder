@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using unusedCssFinder.Models;
 
@@ -6,22 +7,18 @@ namespace unusedCssFinder.Extensions
 {
     public static class HtmlPageModelsExtensions
     {
-        public static int GetNodesDepth(this List<HtmlPageModel> pageModels)
+        public static bool WasProcessedBefore(this List<HtmlPageModel> pageModels, Uri pageModelUri, out HtmlPageModel processedModel)
         {
-            int depth = 0;
-            foreach (var htmlPageModel in pageModels)
+            processedModel = null;
+            foreach (var pageModel in pageModels)
             {
-                if (htmlPageModel.ChildPages != null)
+                if (string.Equals(pageModel.DocumentUri.AbsoluteUri, pageModelUri.AbsoluteUri, StringComparison.InvariantCulture))
                 {
-                    depth = 1 + htmlPageModel.ChildPages.GetNodesDepth();
+                    processedModel = pageModel;
+                    return true;
                 }
             }
-            return depth;
-        }
-
-        public static int GetNumberOfPages(this List<HtmlPageModel> pageModels)
-        {
-            return pageModels.Sum(m => m.GetNumberOfPages());
+            return false;
         }
     }
 }
