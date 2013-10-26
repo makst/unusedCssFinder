@@ -9,7 +9,7 @@ namespace unusedCssFinder.Models
     {
         private List<HtmlPageModel> _childPages = new List<HtmlPageModel>();
 
-        public string documentUri { get; set; }
+        public string documentAddress { get; set; }
         public HtmlDocument CurrentPage { get; set; }
         public List<HtmlPageModel> ChildPages { get { return _childPages; } set { _childPages = value; } }
         public HtmlPageModel ParentPage { get; set; }

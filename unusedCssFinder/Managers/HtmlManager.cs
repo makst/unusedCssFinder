@@ -5,6 +5,7 @@ using System.Net;
 using ExCSS;
 using ExCSS.Model;
 using HtmlAgilityPack;
+using unusedCssFinder.Models;
 
 namespace unusedCssFinder.Managers
 {
@@ -17,12 +18,35 @@ namespace unusedCssFinder.Managers
             _styleManager = styleManager;
         }
 
-        public HtmlDocument GetHtmlDocument(Uri uri)
+        public List<HtmlPageModel> GetHtmlPageModels(List<Uri> pageUris, int scanDepth, int maxNumberOfPages)
+        {
+            var htmlPageModels = new List<HtmlPageModel>();
+            foreach (var pageUri in pageUris)
+            {
+                htmlPageModels.Add(GetHtmlPageModel(pageUri));
+            }
+            if (scanDepth > 0 || maxNumberOfPages > 0)
+            {
+                FillHtmlPageModelsWithChildren(htmlPageModels, scanDepth, maxNumberOfPages);
+            }
+            return htmlPageModels;
+        }
+
+        private void FillHtmlPageModelsWithChildren(List<HtmlPageModel> htmlPageModels, int scanDepth, int maxNumberOfPages)
+        {
+            throw new NotImplementedException();
+        }
+
+        private HtmlPageModel GetHtmlPageModel(Uri uri)
         {
             var client = new WebClient();
             var doc = new HtmlDocument();
             doc.Load(client.OpenRead(uri));
-            return doc;
+            return new HtmlPageModel
+            {
+                CurrentPage = doc,
+                documentAddress = uri.AbsoluteUri
+            };
         }
 
         public Dictionary<string, Stylesheet> GetDocumentStylesheets(Uri baseUri, HtmlDocument htmlDocument)

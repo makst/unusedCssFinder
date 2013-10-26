@@ -60,7 +60,7 @@ First of all tool analyzes specified urls. After that child urls are processed.
             }
 
             List<Uri> parsedUris;
-            if (!InputFilesParser.TryGetAddresses(this.Input, out parsedUris))
+            if (!Utils.UriParser.TryGetAddresses(this.Input, out parsedUris))
             {
                 result.IsValid = false;
                 result.Error = "input[files] parsing error!";

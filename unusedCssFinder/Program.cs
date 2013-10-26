@@ -65,7 +65,6 @@ namespace unusedCssFinder
             List<HtmlDocument> htmlDocuments = new List<HtmlDocument>();
             foreach (var address in options.ParsedUris)
             {
-                htmlDocuments.Add(htmlManager.GetHtmlDocument(address));
             }
         }
 

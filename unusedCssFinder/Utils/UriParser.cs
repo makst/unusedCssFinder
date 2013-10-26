@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace unusedCssFinder.Utils
 {
-    public static class InputFilesParser
+    public static class UriParser
     {
         public static bool TryGetAddresses(IList<string> addressStrings, out List<Uri> addresses)
         {
@@ -37,6 +37,22 @@ namespace unusedCssFinder.Utils
                 return false;
             }
             return true;
+        }
+
+        public static bool TryParseLinkAsUri(string linkToParse, Uri parentPageUri, out Uri parsed)
+        {
+            parsed = null;
+            var temp = new Uri(parentPageUri, linkToParse);
+            if (temp.Host == parentPageUri.Host)
+            {
+                if (temp.IsFile && !temp.AbsoluteUri.EndsWith(".html"))
+                {
+                    return false;
+                }
+                parsed = temp;
+                return true;
+            }
+            return false;
         }
     }
 }

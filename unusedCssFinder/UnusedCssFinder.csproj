@@ -85,7 +85,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThirdParty\css2xpath.cs" />
-    <Compile Include="Utils\InputFilesParser.cs" />
+    <Compile Include="Utils\UriParser.cs" />
     <Compile Include="Utils\SelectorsFixer.cs" />
   </ItemGroup>
   <ItemGroup>
