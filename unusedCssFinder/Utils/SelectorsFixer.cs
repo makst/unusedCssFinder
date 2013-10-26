@@ -37,7 +37,7 @@ namespace unusedCssFinder.Utils
                 {
                     return string.Empty;
                 }
-                return m.Groups[1].Value; /* : or :: with pseudo */
+                return m.Groups[1].Value; /* the whole match pseudo */
             }));
         }
     }
