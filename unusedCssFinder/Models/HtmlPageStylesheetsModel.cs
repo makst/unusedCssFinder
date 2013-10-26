@@ -6,6 +6,6 @@ namespace unusedCssFinder.Models
     public class HtmlPageStylesheetsModel
     {
         public HtmlPageModel HtmlPage { get; set; }
-        public List<Stylesheet> Stylesheets { get; set; }
+        public IEnumerable<StylesheetModel> Stylesheets { get; set; }
     }
 }

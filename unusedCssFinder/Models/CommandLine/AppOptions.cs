@@ -36,7 +36,7 @@ unusedCssFinder -i http://uawebchallenge.com/ -d 1 -p 5 -f c:\results.html
 
 Find all unused css selectors of only c:\test.html, c:\test2.html pages. Writes results to c:\results.html:
 
-unusedCssFinder -i c:\test.html, c:\test2.html -f c:\results.html
+unusedCssFinder -i c:\test.html c:\test2.html -f c:\results.html
 
 Important note:
 

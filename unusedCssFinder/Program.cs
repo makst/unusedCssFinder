@@ -61,11 +61,47 @@ namespace unusedCssFinder
 
         private static void Execute(AppOptions options)
         {
-            var htmlManager = new HtmlManager(new StyleManager());
-            List<HtmlDocument> htmlDocuments = new List<HtmlDocument>();
-            foreach (var address in options.ParsedUris)
+            var htmlManager = new HtmlManager();
+            var htmlPages = htmlManager.GetHtmlPageModels(options.ParsedUris);
+
+            var styleManager = new StyleManager();
+            foreach (var htmlPageModel in htmlPages)
             {
+                var htmlPageCssStyles = htmlManager.GetHtmlPageCssUris(htmlPageModel);
+                styleManager.RetrieveStylesheetModels(htmlPageCssStyles, htmlPageModel.DocumentUri);
             }
+            var allRetrievedStyleSheets = styleManager.AllProcessedStylesheetModels;
+
+            AutomapperConfig.Init();
+            var htmlToCssMapper = new HtmlToCssMapper();
+            var htmlPagesStylesheets = htmlToCssMapper.GetMapResult(htmlPages, allRetrievedStyleSheets);
+
+            var stylesheetApplier = new StylesheetApplier();
+            foreach (var htmlPageStylesheetsModel in htmlPagesStylesheets)
+            {
+                foreach (var stylesheet in htmlPageStylesheetsModel.Stylesheets)
+                {
+                    if (!stylesheet.HasBeenAlreadyAdded)
+                    {
+                        stylesheetApplier.ApplySheetToHtmlPage(stylesheet.CurrentSheetWithUsageData,
+                            htmlPageStylesheetsModel.HtmlPage);
+                    }
+                }
+            }
+
+            var ruleSets = htmlPagesStylesheets.SelectMany(x => x.Stylesheets).Where(x => !x.HasBeenAlreadyAdded)
+                                               .Select(x =>x.CurrentSheetWithUsageData)
+                                               .SelectMany(x => x.RuleSets).ToList();
+            var selectorsInfo = ruleSets.Select(x => x.Selector).ToList();
+
+            var unusedSelectors = selectorsInfo.Where(x => x.IsNotUsed);
+            var unusedSelectorsCount = unusedSelectors.Count();
+
+            var alwaysOverridenSelectors = selectorsInfo.Where(x => x.IsOverriden);
+            var alwaysOverridenSelectorsCount = alwaysOverridenSelectors.Count();
+
+            var alwaysOverridenDeclarations = ruleSets.SelectMany(x => x.Declarations).Where(x => x.IsOverriden);
+            var alwaysOverridenDeclarationsCount = alwaysOverridenDeclarations.Count();
         }
 
         private static void WriteErrorHeaderToConsole(string errorHeader)

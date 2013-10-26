@@ -28,23 +28,23 @@ namespace unusedCssFinder.Managers
                 {
                     stylesheetModels.Add(new StylesheetModel
                     {
-                        WasProcessed = true,
-                        ProcessedSheet = processedSheet,
+                        HasBeenAlreadyAdded = true,
+                        AddedBeforeSheet = processedSheet,
                         HtmlUri = htmlUri
                     });
                 }
                 else
                 {
-                    AddStylesheet(stylesheetModels, sheetModelUri, htmlUri);
+                    AddStylesheet(stylesheetModels, sheetModelUri, htmlUri, false/*is imported*/, null/*parentSheetUri*/);
                 }
             }
             _allProcessedStylesheets.AddRange(stylesheetModels);
         }
 
-        private void AddStylesheet(List<StylesheetModel> stylesheetModels, Uri sheetUri, Uri htmlUri)
+        private void AddStylesheet(List<StylesheetModel> stylesheetModels, Uri sheetUri, Uri htmlUri, bool isImported, Uri parentSheetUri)
         {
-            var stylesheet = GetStylesheetFromAddress(sheetUri, htmlUri);
-            var importDirectives = stylesheet.CurrentSheet.Directives.Where(d => d.Type == DirectiveType.Import);
+            var stylesheet = GetStylesheetFromAddress(sheetUri, htmlUri, isImported, parentSheetUri);
+            var importDirectives = stylesheet.CurrentSheetRaw.Directives.Where(d => d.Type == DirectiveType.Import);
             
             foreach (var importDirective in importDirectives)
             {
@@ -52,22 +52,25 @@ namespace unusedCssFinder.Managers
                 Uri linkUri = null;
                 if (Utils.UriParser.TryParseLinkAsUri(importDirectiveValue, sheetUri, out linkUri))
                 {
-                    AddStylesheet(stylesheetModels, linkUri, htmlUri);
+                    AddStylesheet(stylesheetModels, linkUri, htmlUri, true/*isImported*/, sheetUri);
                 }
             }
-            stylesheetModels.Add(GetStylesheetFromAddress(sheetUri, htmlUri));
+            var stylesheetToAdd = GetStylesheetFromAddress(sheetUri, htmlUri, isImported, parentSheetUri);
+            stylesheetModels.Add(stylesheetToAdd);
         }
 
-        public StylesheetModel GetStylesheetFromAddress(Uri uri, Uri htmlUri)
+        public StylesheetModel GetStylesheetFromAddress(Uri uri, Uri htmlUri, bool isImported, Uri parentSheetUri)
         {
             var client = new WebClient();
             var downLoadedStyle = client.DownloadString(uri);
             var parser = new StylesheetParser();
             return new StylesheetModel
             {
-                CurrentSheet = parser.Parse(downLoadedStyle),
+                CurrentSheetRaw = parser.Parse(downLoadedStyle),
                 DocumentUri = uri,
-                HtmlUri = htmlUri
+                HtmlUri = htmlUri,
+                IsImported = isImported,
+                ParentSheetUri = parentSheetUri
             };
         }
     }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using HtmlAgilityPack;
 using ThirdParty.MostThingsWeb;
 using unusedCssFinder.CssData.UsageModels;
 using unusedCssFinder.Models;
@@ -61,16 +59,17 @@ namespace unusedCssFinder.Utils
 
         private void AddMapping(HtmlNodeModel htmlNodeModel, RuleSet ruleSet)
         {
-            var existingNode = HtmlNodesRuleSets.Keys.FirstOrDefault(k => k.Equals(htmlNodeModel));
-            if (existingNode == null)
+            var nodeExists = HtmlNodesRuleSets.ContainsKey(htmlNodeModel);
+            if (!nodeExists)
             {
                 HtmlNodesRuleSets.Add(htmlNodeModel, new List<RuleSet> { ruleSet });
             }
-            {
-                ChangeUsageOfExistingRules(htmlNodeModel, ruleSet);
-            }
+            ChangeUsageOfExistingRules(htmlNodeModel, ruleSet);
             ApplyDeclarationsToNode(ruleSet.Declarations, htmlNodeModel);
-            HtmlNodesRuleSets[htmlNodeModel].Add(ruleSet);
+            if (nodeExists)
+            {
+                HtmlNodesRuleSets[htmlNodeModel].Add(ruleSet);
+            }
         }
 
         private void ApplyDeclarationsToNode(List<Declaration> declarations, HtmlNodeModel htmlNodeModel)

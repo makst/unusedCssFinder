@@ -44,7 +44,7 @@ namespace unusedCssFinder.Managers
         public List<Uri> GetHtmlPageCssUris(HtmlPageModel htmlPageModel)
         {
             List<Uri> uris = new List<Uri>();
-            HtmlNodeCollection allLinks = htmlPageModel.CurrentPage.DocumentNode.SelectNodes("link[@rel=\"stylesheet\"]");
+            HtmlNodeCollection allLinks = htmlPageModel.CurrentPage.DocumentNode.SelectNodes("//link[@rel=\"stylesheet\"]");
             if (allLinks != null)
             {
                 foreach (HtmlNode link in allLinks)
