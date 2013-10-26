@@ -76,21 +76,24 @@
     <Compile Include="Extensions\StylesheetModelsExtensions.cs" />
     <Compile Include="Extensions\HtmlPageModelsExtensions.cs" />
     <Compile Include="Utils\HtmlToCssMapper.cs" />
-    <Compile Include="Models\StylesheetModel.cs" />
+    <Compile Include="Models\Style\StylesheetModel.cs" />
+    <Compile Include="Utils\OutputGenerator.cs" />
+    <Compile Include="Models\Statistics\StatisticsModel.cs" />
     <Compile Include="Utils\StylesheetApplier.cs" />
     <Compile Include="Managers\HtmlManager.cs" />
     <Compile Include="Managers\StyleManager.cs" />
     <Compile Include="CssData\UsageModels\DeclarationUsageType.cs" />
     <Compile Include="Models\CommandLine\AppOptions.cs" />
     <Compile Include="Models\CommandLine\ValidationResult.cs" />
-    <Compile Include="Models\HtmlNodeModel.cs" />
-    <Compile Include="Models\HtmlPageModel.cs" />
-    <Compile Include="Models\HtmlPageStylesheetsModel.cs" />
+    <Compile Include="Models\Html\HtmlNodeModel.cs" />
+    <Compile Include="Models\Html\HtmlPageModel.cs" />
+    <Compile Include="Models\Html\HtmlPageStylesheetsModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThirdParty\css2xpath.cs" />
     <Compile Include="Utils\UriParser.cs" />
     <Compile Include="Utils\SelectorsFixer.cs" />
+    <Compile Include="Models\Statistics\UsageStatisticsModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

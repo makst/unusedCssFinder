@@ -1,7 +1,7 @@
 ﻿using System;
 using HtmlAgilityPack;
 
-namespace unusedCssFinder.Models
+namespace unusedCssFinder.Models.Html
 {
     public class HtmlPageModel
     {

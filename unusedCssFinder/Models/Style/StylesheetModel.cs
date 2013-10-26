@@ -1,7 +1,7 @@
 ﻿using System;
 using unusedCssFinder.CssData.UsageModels;
 
-namespace unusedCssFinder.Models
+namespace unusedCssFinder.Models.Style
 {
     public class StylesheetModel
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using ExCSS;
+using unusedCssFinder.Models.Style;
 
-namespace unusedCssFinder.Models
+namespace unusedCssFinder.Models.Html
 {
     public class HtmlPageStylesheetsModel
     {

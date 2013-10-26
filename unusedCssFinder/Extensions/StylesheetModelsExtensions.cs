@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using unusedCssFinder.Models;
+using unusedCssFinder.Models.Style;
 
 namespace unusedCssFinder.Extensions
 {

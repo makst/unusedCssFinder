@@ -6,6 +6,7 @@ using ExCSS;
 using ExCSS.Model;
 using unusedCssFinder.Extensions;
 using unusedCssFinder.Models;
+using unusedCssFinder.Models.Style;
 
 namespace unusedCssFinder.Managers
 {

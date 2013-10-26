@@ -5,6 +5,8 @@ using System.Net;
 using HtmlAgilityPack;
 using unusedCssFinder.Extensions;
 using unusedCssFinder.Models;
+using unusedCssFinder.Models.Html;
+using UriParser = unusedCssFinder.Utils.UriParser;
 
 namespace unusedCssFinder.Managers
 {
@@ -50,10 +52,13 @@ namespace unusedCssFinder.Managers
                 foreach (HtmlNode link in allLinks)
                 {
                     string linkHref = link.Attributes.First(a => a.Name == "href").Value;
-                    Uri linkUri = null;
-                    if (Utils.UriParser.TryParseLinkAsUri(linkHref, htmlPageModel.DocumentUri, out linkUri))
+                    if (!linkHref.StartsWith("#"))
                     {
-                        uris.Add(linkUri);
+                        Uri linkUri = null;
+                        if (UriParser.TryParseLinkAsUri(linkHref, htmlPageModel.DocumentUri, out linkUri))
+                        {
+                            uris.Add(linkUri);
+                        }
                     }
                 }
             }
