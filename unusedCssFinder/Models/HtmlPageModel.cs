@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.AccessControl;
 using HtmlAgilityPack;
@@ -9,7 +10,7 @@ namespace unusedCssFinder.Models
     {
         private List<HtmlPageModel> _childPages = new List<HtmlPageModel>();
 
-        public string documentAddress { get; set; }
+        public Uri documentUri { get; set; }
         public HtmlDocument CurrentPage { get; set; }
         public List<HtmlPageModel> ChildPages { get { return _childPages; } set { _childPages = value; } }
         public HtmlPageModel ParentPage { get; set; }

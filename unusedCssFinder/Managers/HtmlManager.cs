@@ -5,7 +5,9 @@ using System.Net;
 using ExCSS;
 using ExCSS.Model;
 using HtmlAgilityPack;
+using unusedCssFinder.Extensions;
 using unusedCssFinder.Models;
+using UriParser = unusedCssFinder.Utils.UriParser;
 
 namespace unusedCssFinder.Managers
 {
@@ -13,13 +15,26 @@ namespace unusedCssFinder.Managers
     {
         private StyleManager _styleManager;
 
-        public HtmlManager(StyleManager styleManager)
+        private LinkedList<Uri> _urisLinkedList = new LinkedList<Uri>();
+        private LinkedList<HtmlPageModel> _pageModelsLinkedList = new LinkedList<HtmlPageModel>();
+        private Uri _currentUri = null;
+        private HtmlPageModel _currentHtmlPageModel = null;
+
+        private List<HtmlPageModel> _pageModelsToReturn = new List<HtmlPageModel>(); 
+
+        public HtmlManager(StyleManager styleManager, List<Uri> initialPageUris)
         {
+            foreach (var initialPageUri in initialPageUris)
+            {
+                _urisLinkedList.AddLast(initialPageUri);
+            }
             _styleManager = styleManager;
         }
 
-        public List<HtmlPageModel> GetHtmlPageModels(List<Uri> pageUris, int scanDepth, int maxNumberOfPages)
+        public List<HtmlPageModel> GetHtmlPageModels(int scanDepth, int maxNumberOfPages)
         {
+            SetNextUriAndHtmlPage();
+
             var htmlPageModels = new List<HtmlPageModel>();
             foreach (var pageUri in pageUris)
             {
@@ -32,9 +47,37 @@ namespace unusedCssFinder.Managers
             return htmlPageModels;
         }
 
+        private void SetNextUriAndHtmlPage()
+        {
+            if (_pageModelsLinkedList.Count < _urisLinkedList.Count)
+            {
+                _currentHtmlPageModel = _pageModelsLinkedList.Last.Value;
+                _currentUri = _urisLinkedList.ToList()[_pageModelsLinkedList.Count];
+            }
+        }
+
         private void FillHtmlPageModelsWithChildren(List<HtmlPageModel> htmlPageModels, int scanDepth, int maxNumberOfPages)
         {
-            throw new NotImplementedException();
+            foreach (var htmlPageModel in htmlPageModels)
+            {
+                List<Uri> childPageUris = GetHtmlPageChildUris(htmlPageModel);
+                bool isEnoughPages = IsEnoughPagesParsed(htmlPageModels, scanDepth, maxNumberOfPages);
+                foreach (var childPageUri in childPageUris)
+                {
+                    
+                }
+            }
+
+            
+        }
+
+        private bool IsEnoughPagesParsed(List<HtmlPageModel> htmlPageModels, int scanDepth, int maxNumberOfPages)
+        {
+            if (htmlPageModels.GetNodesDepth() <= scanDepth || htmlPageModels.GetNumberOfPages() <= maxNumberOfPages)
+            {
+                return true;
+            }
+            return f
         }
 
         private HtmlPageModel GetHtmlPageModel(Uri uri)
@@ -45,8 +88,27 @@ namespace unusedCssFinder.Managers
             return new HtmlPageModel
             {
                 CurrentPage = doc,
-                documentAddress = uri.AbsoluteUri
+                documentUri = uri
             };
+        }
+
+        private List<Uri> GetHtmlPageChildUris(HtmlPageModel htmlPageModel)
+        {
+            List<Uri> uris = new List<Uri>();
+            HtmlNodeCollection allLinks = htmlPageModel.CurrentPage.DocumentNode.SelectNodes("//a[@href");
+            if (allLinks != null)
+            {
+                foreach (HtmlNode link in allLinks)
+                {
+                    string linkHref = link.Attributes.First(a => a.Name == "href").Value;
+                    Uri linkUri = null;
+                    if (UriParser.TryParseLinkAsUri(linkHref, htmlPageModel.documentUri, out linkUri))
+                    {
+                        uris.Add(linkUri);
+                    }
+                }
+            }
+            return uris;
         }
 
         public Dictionary<string, Stylesheet> GetDocumentStylesheets(Uri baseUri, HtmlDocument htmlDocument)
