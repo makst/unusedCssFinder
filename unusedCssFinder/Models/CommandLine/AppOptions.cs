@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using CommandLine;
 using CommandLine.Text;
-using unusedCssFinder.Utils;
 
 namespace unusedCssFinder.Models.CommandLine
 {

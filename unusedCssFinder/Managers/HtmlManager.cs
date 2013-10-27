@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using HtmlAgilityPack;
 using unusedCssFinder.Extensions;
-using unusedCssFinder.Models;
 using unusedCssFinder.Models.Html;
 using UriParser = unusedCssFinder.Utils.UriParser;
 

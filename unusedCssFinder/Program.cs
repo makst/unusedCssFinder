@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
 using CommandLine;
-using CommandLine.Text;
-using HtmlAgilityPack;
-using unusedCssFinder.CssData.UsageModels;
 using unusedCssFinder.Managers;
-using unusedCssFinder.Models;
 using unusedCssFinder.Models.CommandLine;
 using unusedCssFinder.Utils;
-using unusedCssFinder.Models.Style;
 
 namespace unusedCssFinder
 {

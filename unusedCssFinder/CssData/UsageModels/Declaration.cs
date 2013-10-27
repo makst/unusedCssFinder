@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ExCSS.Model;
-using unusedCssFinder.Models;
 using unusedCssFinder.Models.Html;
 using unusedCssFinder.Utils;
 

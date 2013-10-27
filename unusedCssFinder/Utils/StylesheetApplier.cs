@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using ThirdParty.MostThingsWeb;
 using unusedCssFinder.CssData.UsageModels;
-using unusedCssFinder.Models;
 using unusedCssFinder.Models.Html;
 
 namespace unusedCssFinder.Utils
