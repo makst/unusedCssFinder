@@ -19,14 +19,7 @@ namespace unusedCssFinder.Utils
                 }
 
                 var firstUri = tempAddresses.First();
-                if (addressStrings.Count() == 1 && firstUri.IsFile && firstUri.AbsolutePath.EndsWith("html"))
-                {
-                    if (!File.Exists(firstUri.AbsolutePath))
-                    {
-                        return false;
-                    }
-                }
-                else if (!tempAddresses.All(u => (u.Scheme == "http" || u.Scheme == "https") && u.Host == firstUri.Host))
+                if (!tempAddresses.All(u => (u.Scheme == "http" || u.Scheme == "https") && u.Host == firstUri.Host))
                 {
                     return false;
                 }
@@ -42,17 +35,17 @@ namespace unusedCssFinder.Utils
         public static bool TryParseLinkAsUri(string linkToParse, Uri parentPageUri, out Uri parsed)
         {
             parsed = null;
-            var temp = new Uri(parentPageUri, linkToParse);
-            if (temp.Host == parentPageUri.Host)
+            Uri temp;
+            try
             {
-                if (temp.IsFile && !temp.AbsoluteUri.EndsWith(".html"))
-                {
-                    return false;
-                }
-                parsed = temp;
-                return true;
+                temp = new Uri(parentPageUri, linkToParse);
             }
-            return false;
+            catch (Exception e)
+            {
+                return false;
+            }
+            parsed = temp;
+            return true;
         }
     }
 }
