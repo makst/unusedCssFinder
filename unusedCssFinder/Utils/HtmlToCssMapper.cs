@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using unusedCssFinder.CssData.UsageModels;
-using unusedCssFinder.Models;
 using unusedCssFinder.Models.Html;
 using unusedCssFinder.Models.Style;
 

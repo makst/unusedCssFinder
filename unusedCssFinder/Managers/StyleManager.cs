@@ -26,12 +26,7 @@ namespace unusedCssFinder.Managers
                 StylesheetModel processedSheet;
                 if (_allProcessedStylesheets.WasProcessedBefore(sheetModelUri, out processedSheet))
                 {
-                    stylesheetModels.Add(new StylesheetModel
-                    {
-                        HasBeenAlreadyAdded = true,
-                        AddedBeforeSheet = processedSheet,
-                        HtmlUri = htmlUri
-                    });
+                    AddProcessedBeforeStylesheet(htmlUri, stylesheetModels, processedSheet);
                 }
                 else
                 {
@@ -39,6 +34,21 @@ namespace unusedCssFinder.Managers
                 }
             }
             _allProcessedStylesheets.AddRange(stylesheetModels);
+        }
+
+        private void AddProcessedBeforeStylesheet(Uri htmlUri, List<StylesheetModel> stylesheetModels, StylesheetModel processedSheet)
+        {
+            StylesheetModel importedStylesheet;
+            if (processedSheet.ImportsStylesheet(_allProcessedStylesheets, out importedStylesheet))
+            {
+                AddProcessedBeforeStylesheet(htmlUri, stylesheetModels, importedStylesheet);
+            }
+            stylesheetModels.Add(new StylesheetModel
+            {
+                HasBeenAlreadyAdded = true,
+                AddedBeforeSheet = processedSheet,
+                HtmlUri = htmlUri
+            });
         }
 
         private void AddStylesheet(List<StylesheetModel> stylesheetModels, Uri sheetUri, Uri htmlUri, bool isImported, Uri parentSheetUri)
