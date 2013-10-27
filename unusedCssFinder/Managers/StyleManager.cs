@@ -16,9 +16,9 @@ namespace unusedCssFinder.Managers
         public List<StylesheetModel> AllProcessedStylesheetModels
         {
             get { return _allProcessedStylesheets; }
-        } 
+        }
 
-        public void RetrieveStylesheetModels(List<Uri> stylesheetUris, Uri htmlUri)
+        public void GenerateStylesheetModels(List<Uri> stylesheetUris, Uri htmlUri)
         {
             var stylesheetModels = new List<StylesheetModel>();
             foreach (var sheetModelUri in stylesheetUris)
@@ -47,6 +47,8 @@ namespace unusedCssFinder.Managers
             {
                 HasBeenAlreadyAdded = true,
                 AddedBeforeSheet = processedSheet,
+                IsImported = processedSheet.IsImported,
+                CanBeProcessed = processedSheet.CanBeProcessed,
                 HtmlUri = htmlUri
             });
         }
@@ -55,7 +57,7 @@ namespace unusedCssFinder.Managers
         {
             var stylesheet = GetStylesheetFromAddress(sheetUri, htmlUri, isImported, parentSheetUri);
             var importDirectives = stylesheet.CurrentSheetRaw.Directives.Where(d => d.Type == DirectiveType.Import);
-            
+
             foreach (var importDirective in importDirectives)
             {
                 var importDirectiveValue = importDirective.Expression.Terms[0].Value;
@@ -72,15 +74,27 @@ namespace unusedCssFinder.Managers
         public StylesheetModel GetStylesheetFromAddress(Uri uri, Uri htmlUri, bool isImported, Uri parentSheetUri)
         {
             var client = new WebClient();
-            var downLoadedStyle = client.DownloadString(uri);
-            var parser = new StylesheetParser();
+
+            bool canBeProcessed = true;
+            var stylesheet = new Stylesheet();
+            try
+            {
+                var downLoadedStyle = client.DownloadString(uri);
+                var parser = new StylesheetParser();
+                stylesheet = parser.Parse(downLoadedStyle);
+            }
+            catch (Exception)
+            {
+                canBeProcessed = false;
+            }
             return new StylesheetModel
             {
-                CurrentSheetRaw = parser.Parse(downLoadedStyle),
+                CurrentSheetRaw = stylesheet,
                 DocumentUri = uri,
                 HtmlUri = htmlUri,
                 IsImported = isImported,
-                ParentSheetUri = parentSheetUri
+                ParentSheetUri = parentSheetUri,
+                CanBeProcessed = canBeProcessed
             };
         }
     }

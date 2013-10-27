@@ -14,7 +14,7 @@ namespace unusedCssFinder.Utils
         {
             foreach (var styleSheet in allRetrievedStyleSheets)
             {
-                if (!styleSheet.HasBeenAlreadyAdded)
+                if (styleSheet.CanBeUsedToGetUsageData)
                 {
                     var sheetWithUsageData = Mapper.Map<ExCSS.Stylesheet, Stylesheet>(styleSheet.CurrentSheetRaw);
                     styleSheet.CurrentSheetWithUsageData = sheetWithUsageData;
