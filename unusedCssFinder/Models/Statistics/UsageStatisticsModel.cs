@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace unusedCssFinder.Models.Statistics
 {
     public class UsageStatisticsModel
     {
-        public bool OnlyTotalStatistics { get; set; }
-        public List<StatisticsModel> StatisticsModels { get; set; }
+        public ItemStatisticsModel TotalStatisticsModel { get; set; } 
+        public List<ItemStatisticsModel> PerPageStatisticsModel { get; set; } 
     }
 }

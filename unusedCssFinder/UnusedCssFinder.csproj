@@ -75,10 +75,16 @@
     <Compile Include="CssData\UsageModels\Stylesheet.cs" />
     <Compile Include="Extensions\StylesheetModelsExtensions.cs" />
     <Compile Include="Extensions\HtmlPageModelsExtensions.cs" />
+    <Compile Include="Models\Statistics\UsageStatisticsModel.cs" />
+    <Compile Include="Resources\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utils\HtmlToCssMapper.cs" />
     <Compile Include="Models\Style\StylesheetModel.cs" />
     <Compile Include="Utils\OutputGenerator.cs" />
-    <Compile Include="Models\Statistics\StatisticsModel.cs" />
+    <Compile Include="Models\Statistics\StylesheetStatisticsModel.cs" />
     <Compile Include="Utils\StylesheetApplier.cs" />
     <Compile Include="Managers\HtmlManager.cs" />
     <Compile Include="Managers\StyleManager.cs" />
@@ -93,7 +99,8 @@
     <Compile Include="ThirdParty\css2xpath.cs" />
     <Compile Include="Utils\UriParser.cs" />
     <Compile Include="Utils\SelectorsFixer.cs" />
-    <Compile Include="Models\Statistics\UsageStatisticsModel.cs" />
+    <Compile Include="Models\Statistics\ItemStatisticsModel.cs" />
+    <Compile Include="Utils\UsageStatisticsGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -101,7 +108,12 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

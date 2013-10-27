@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using unusedCssFinder.Models.Html;
 
 namespace unusedCssFinder.CssData.UsageModels
 {
@@ -70,6 +71,36 @@ namespace unusedCssFinder.CssData.UsageModels
                 }
                 return false;
             }
+        }
+
+        public bool IsNotUsedOnPage(HtmlPageModel htmlPage)
+        {
+            if (MatchErrorOccured)
+            {
+                return false;
+            }
+            if (RuleSet.Declarations.All(d => d.IsNotUsedOnPage(htmlPage)))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsOverridenOnPage(HtmlPageModel htmlPage)
+        {
+            if (MatchErrorOccured)
+            {
+                return false;
+            }
+            if (IsNotUsedOnPage(htmlPage))
+            {
+                return false;
+            }
+            if (RuleSet.Declarations.All(d => d.IsOverridenOnPage(htmlPage)))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

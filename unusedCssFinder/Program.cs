@@ -86,22 +86,16 @@ namespace unusedCssFinder
                         stylesheetApplier.ApplySheetToHtmlPage(stylesheet.CurrentSheetWithUsageData,
                             htmlPageStylesheetsModel.HtmlPage);
                     }
+                    else
+                    {
+                        stylesheetApplier.ApplySheetToHtmlPage(stylesheet.AddedBeforeSheet.CurrentSheetWithUsageData,
+                            htmlPageStylesheetsModel.HtmlPage);
+                    }
                 }
             }
 
-            var ruleSets = htmlPagesStylesheets.SelectMany(x => x.Stylesheets).Where(x => !x.HasBeenAlreadyAdded)
-                                               .Select(x =>x.CurrentSheetWithUsageData)
-                                               .SelectMany(x => x.RuleSets).ToList();
-            var selectorsInfo = ruleSets.Select(x => x.Selector).ToList();
-
-            var unusedSelectors = selectorsInfo.Where(x => x.IsNotUsed);
-            var unusedSelectorsCount = unusedSelectors.Count();
-
-            var alwaysOverridenSelectors = selectorsInfo.Where(x => x.IsOverriden);
-            var alwaysOverridenSelectorsCount = alwaysOverridenSelectors.Count();
-
-            var alwaysOverridenDeclarations = ruleSets.SelectMany(x => x.Declarations).Where(x => x.IsOverriden);
-            var alwaysOverridenDeclarationsCount = alwaysOverridenDeclarations.Count();
+            var usageStatisticsGenerator = new UsageStatisticsGenerator();
+            var usageStatisticsModel = usageStatisticsGenerator.GetUsageStatisticsModel(htmlPagesStylesheets);
         }
 
         private static void WriteErrorHeaderToConsole(string errorHeader)
