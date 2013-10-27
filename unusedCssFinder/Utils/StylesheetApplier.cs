@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ThirdParty.MostThingsWeb;
+using MostThingsWeb;
 using unusedCssFinder.CssData.UsageModels;
 using unusedCssFinder.Models.Html;
 

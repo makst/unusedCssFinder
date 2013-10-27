@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>unusedCssFinder</RootNamespace>
     <AssemblyName>unusedCssFinder</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -44,11 +44,15 @@
     <Reference Include="CommandLine">
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="css2xpath.1.0.0.1">
+      <HintPath>..\ThirdParty\css2xpath.1.0.0.1.dll</HintPath>
+    </Reference>
     <Reference Include="ExCSS">
       <HintPath>..\packages\ExCSS.1.1.0\lib\net40\ExCSS.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -96,7 +100,6 @@
     <Compile Include="Models\Html\HtmlPageStylesheetsModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ThirdParty\css2xpath.cs" />
     <Compile Include="Utils\UriParser.cs" />
     <Compile Include="Utils\SelectorsFixer.cs" />
     <Compile Include="Models\Statistics\ItemStatisticsModel.cs" />
