@@ -44,8 +44,8 @@
     <Reference Include="CommandLine">
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
-    <Reference Include="css2xpath.1.0.0.1">
-      <HintPath>..\ThirdParty\css2xpath.1.0.0.1.dll</HintPath>
+    <Reference Include="css2xpath">
+      <HintPath>..\ThirdParty\css2xpath.dll</HintPath>
     </Reference>
     <Reference Include="ExCSS">
       <HintPath>..\packages\ExCSS.1.1.0\lib\net40\ExCSS.dll</HintPath>
@@ -54,6 +54,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.JScript" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

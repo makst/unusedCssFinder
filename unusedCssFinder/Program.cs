@@ -21,6 +21,7 @@ namespace unusedCssFinder
                     return;
                 }
                 Execute(options);
+                Console.WriteLine("\nFile " + options.OutputFile + " has been created.");
             }
         }
 
