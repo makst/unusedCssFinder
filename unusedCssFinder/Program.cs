@@ -10,6 +10,7 @@ using unusedCssFinder.Managers;
 using unusedCssFinder.Models;
 using unusedCssFinder.Models.CommandLine;
 using unusedCssFinder.Utils;
+using unusedCssFinder.Models.Style;
 
 namespace unusedCssFinder
 {
@@ -81,21 +82,18 @@ namespace unusedCssFinder
             {
                 foreach (var stylesheet in htmlPageStylesheetsModel.Stylesheets)
                 {
-                    if (!stylesheet.HasBeenAlreadyAdded)
-                    {
-                        stylesheetApplier.ApplySheetToHtmlPage(stylesheet.CurrentSheetWithUsageData,
-                            htmlPageStylesheetsModel.HtmlPage);
-                    }
-                    else
-                    {
-                        stylesheetApplier.ApplySheetToHtmlPage(stylesheet.AddedBeforeSheet.CurrentSheetWithUsageData,
-                            htmlPageStylesheetsModel.HtmlPage);
-                    }
+                    var sheetToUse = stylesheet.HasBeenAlreadyAdded
+                                                ? stylesheet.AddedBeforeSheet.CurrentSheetWithUsageData
+                                                : stylesheet.CurrentSheetWithUsageData;
+
+                    stylesheetApplier.ApplySheetToHtmlPage(sheetToUse, htmlPageStylesheetsModel.HtmlPage);
                 }
             }
 
             var usageStatisticsGenerator = new UsageStatisticsGenerator();
             var usageStatisticsModel = usageStatisticsGenerator.GetUsageStatisticsModel(htmlPagesStylesheets);
+            var outputGenerator = new OutputGenerator();
+            outputGenerator.Generate(options.OutputFile, usageStatisticsModel);
         }
 
         private static void WriteErrorHeaderToConsole(string errorHeader)

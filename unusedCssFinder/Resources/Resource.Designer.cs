@@ -61,11 +61,20 @@ namespace unusedCssFinder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;h2 class=&quot;span5&quot; &gt;[DESCRIPTION]&lt;/h2&gt;.
+        ///   Looks up a localized string similar to &lt;h2 class=&quot;span5 row-fluid&quot; &gt;[DESCRIPTION]&lt;/h2&gt;.
         /// </summary>
         internal static string Description_template {
             get {
                 return ResourceManager.GetString("Description_template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;h2 class=&quot;span5 row-fluid green&quot; &gt;[DESCRIPTION]&lt;/h2&gt;.
+        /// </summary>
+        internal static string Description_template_page {
+            get {
+                return ResourceManager.GetString("Description_template_page", resourceCulture);
             }
         }
         
@@ -85,7 +94,7 @@ namespace unusedCssFinder.Resources {
         ///	&lt;link href=&quot;http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
         ///  &lt;link href=&quot;http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.min.css&quot; rel=&quot;stylesheet&quot;&gt;
         ///  &lt;script src=&quot;http://code.jquery.com/jquery.js&quot;&gt;&lt;/script&gt;
-        ///	&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js&quot; &gt;&lt;/script&gt;
+        ///	&lt;script type=&quot;text/javascript&quot; src=&quot;http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js&quot; &gt;&lt;/script&gt;&lt;style&gt;.green {color:green}&lt;/style&gt;
         ///&lt;/head&gt;
         ///&lt;body&gt;.
         /// </summary>

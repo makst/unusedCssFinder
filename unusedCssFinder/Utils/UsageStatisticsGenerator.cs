@@ -13,7 +13,8 @@ namespace unusedCssFinder.Utils
             var stylesheets = htmlPagesStylesheets.SelectMany(x => x.Stylesheets).ToList();
             var usageModel = new UsageStatisticsModel
             {
-                TotalStatisticsModel = GetTotalItemStatisticsModel(stylesheets)
+                TotalStatisticsModel = GetTotalItemStatisticsModel(stylesheets),
+                PerPageStatisticsModel = new List<ItemStatisticsModel>()
             };
             if (htmlPagesStylesheets.Select(x => x.HtmlPage).Count() == 1)
             {
@@ -33,7 +34,7 @@ namespace unusedCssFinder.Utils
         {
             var pageStatistics = new ItemStatisticsModel
             {
-                ItemDescription = htmlPagesStylesheet.HtmlPage.DocumentUri.AbsolutePath,
+                ItemDescription = htmlPagesStylesheet.HtmlPage.DocumentUri.AbsoluteUri,
                 StylesheetStatisticsModels = new List<StylesheetStatisticsModel>()
             };
 
@@ -47,12 +48,12 @@ namespace unusedCssFinder.Utils
 
                 var stylesheetStatisticsModel = new StylesheetStatisticsModel
                 {
-                    StylesheetDescription = stylesheetToUse.DocumentUri.AbsoluteUri,
+                    StylesheetDescription = GetStylesheetDesription(stylesheetToUse),
                     UnusedSelestors = selectors.Where(x => x.IsNotUsedOnPage(htmlPagesStylesheet.HtmlPage)).Select(x => x.ToString()),
                     OverridenSelectors = selectors.Where(x => x.IsOverridenOnPage(htmlPagesStylesheet.HtmlPage)).Select(x => x.ToString()),
                     OverridenDeclarations = ruleSets.SelectMany(x => x.Declarations)
                                                     .Where(x => x.IsOverridenOnPage(htmlPagesStylesheet.HtmlPage))
-                                                    .Select(x => x.ToString())
+                                                    .Select(x => x.ToStringWithSelector())
                 };
                 pageStatistics.StylesheetStatisticsModels.Add(stylesheetStatisticsModel);
             }
@@ -75,15 +76,26 @@ namespace unusedCssFinder.Utils
 
                     var stylesheetStatisticsModel = new StylesheetStatisticsModel
                     {
-                        StylesheetDescription = stylesheetModel.DocumentUri.AbsoluteUri,
+                        StylesheetDescription = GetStylesheetDesription(stylesheetModel),
                         UnusedSelestors = selectors.Where(x => x.IsNotUsed).Select(x => x.ToString()),
                         OverridenSelectors = selectors.Where(x => x.IsOverriden).Select(x => x.ToString()),
-                        OverridenDeclarations = ruleSets.SelectMany(x => x.Declarations).Where(x => x.IsOverriden).Select(x => x.ToString())
+                        OverridenDeclarations = ruleSets.SelectMany(x => x.Declarations).Where(x => x.IsOverriden)
+                                                        .Select(x => x.ToStringWithSelector())
                     };
                     totalStatisticsModel.StylesheetStatisticsModels.Add(stylesheetStatisticsModel);
                 }
             }
             return totalStatisticsModel;
+        }
+
+        private string GetStylesheetDesription(StylesheetModel stylesheetModel)
+        {
+            if (stylesheetModel.IsImported)
+            {
+                return string.Format("{0} (imported from {1})", stylesheetModel.DocumentUri.AbsoluteUri,
+                    stylesheetModel.ParentSheetUri.AbsoluteUri);
+            }
+            return stylesheetModel.DocumentUri.AbsoluteUri;
         }
     }
 }

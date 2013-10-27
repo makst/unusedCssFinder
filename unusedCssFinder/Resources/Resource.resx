@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Description_template" xml:space="preserve">
-    <value>&lt;h2 class="span5" &gt;[DESCRIPTION]&lt;/h2&gt;</value>
+    <value>&lt;h2 class="span5 row-fluid" &gt;[DESCRIPTION]&lt;/h2&gt;</value>
+  </data>
+  <data name="Description_template_page" xml:space="preserve">
+    <value>&lt;h2 class="span5 row-fluid green" &gt;[DESCRIPTION]&lt;/h2&gt;</value>
   </data>
   <data name="Html_bottom" xml:space="preserve">
     <value>&lt;/body&gt;
@@ -130,7 +133,7 @@
 	&lt;link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"&gt;
   &lt;link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet"&gt;
   &lt;script src="http://code.jquery.com/jquery.js"&gt;&lt;/script&gt;
-	&lt;script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js" &gt;&lt;/script&gt;
+	&lt;script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js" &gt;&lt;/script&gt;&lt;style&gt;.green {color:green}&lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;</value>
   </data>

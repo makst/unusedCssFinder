@@ -132,5 +132,10 @@ namespace unusedCssFinder.CssData.UsageModels
         {
             return _declaration.ToString();
         }
+
+        public string ToStringWithSelector()
+        {
+            return string.Format("{0}{{{1}}}", RuleSet.Selector, _declaration);
+        }
     }
 }

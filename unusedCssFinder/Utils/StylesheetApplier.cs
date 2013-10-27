@@ -36,7 +36,12 @@ namespace unusedCssFinder.Utils
             try
             {
                 var selectorToUse = SelectorsFixer.GetFixedSelector(selector);
+                if (string.IsNullOrEmpty(selectorToUse))
+                {
+                    return;
+                }
                 var xpath = css2xpath.Transform(selectorToUse);
+                
                 var matchedNodes = htmlPage.CurrentPage.DocumentNode.SelectNodes(xpath);
                 if (matchedNodes == null)
                 {
